@@ -11,9 +11,9 @@ import { CgMenuGridO } from "react-icons/cg";
 const Navbar = () => {
   return (
     <>
-      <header className="fixed bottom-0 w-full">
+      <header className="fixed bottom-0 w-full backdrop-blur-xl">
         <div>
-          <nav className="grid grid-cols-5 h-[9vh] place-items-center bg-dark text-light rounded-t-2xl">
+          <nav className="grid grid-cols-5 h-[9vh] place-items-center text-dark border-t-2 border-baseGreen rounded-t-2xl">
             <Link href="/" className="active:scale-[.9]" title="Home">
               <BiHome size={28} />
             </Link>
@@ -27,7 +27,7 @@ const Navbar = () => {
               <BiBookOpen size={28} />
             </Link>
             <Link href="/" className="active:scale-[.9]" title="User">
-              <Image src="/user.svg" width={28} height={28} />
+              <Image src="/user.svg" width={28} height={28} alt="user" />
             </Link>
           </nav>
         </div>

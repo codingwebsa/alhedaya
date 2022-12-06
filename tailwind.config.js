@@ -13,6 +13,10 @@ module.exports = {
         light: "#E8F3F1",
         dark: "#252c33",
       },
+      fontFamily: {
+        hindSiliguri: ["Hind Siliguri"],
+        nunito: ["Nunito"],
+      },
     },
   },
   plugins: [],

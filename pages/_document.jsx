@@ -4,9 +4,14 @@ export default function Document() {
   return (
     <Html>
       <Head>
-        <title>আল হেদায়া</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Hind+Siliguri&family=Nunito&display=swap"
+          rel="stylesheet"
+        />
       </Head>
-      <body className="text-dark">
+      <body className="text-dark font-nunito">
         <Main />
         <NextScript />
       </body>
