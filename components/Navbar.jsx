@@ -11,7 +11,7 @@ import { CgMenuGridO } from "react-icons/cg";
 const Navbar = () => {
   return (
     <>
-      <header className="fixed bottom-0 w-full backdrop-blur-xl">
+      <header className="fixed bottom-0 w-full bg-white z-[999]">
         <div>
           <nav className="grid grid-cols-5 h-[9vh] place-items-center text-dark border-t-2 border-baseGreen rounded-t-2xl">
             <Link href="/" className="active:scale-[.9]" title="Home">

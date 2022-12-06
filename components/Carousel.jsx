@@ -41,16 +41,16 @@ const Banner = () => {
           autoPlaySpeed={5000}
         >
           <div className="mx-1 rounded-md overflow-hidden">
-            <Image alt="banner1" src={Banner1} />
+            <Image alt="banner1" src={Banner1} property="true" />
           </div>
           <div className="mx-1 rounded-md overflow-hidden">
-            <Image alt="banner2" src={Banner2} />
+            <Image alt="banner2" src={Banner2} property="true" />
           </div>
           <div className="mx-1 rounded-md overflow-hidden">
-            <Image alt="banner3" src={Banner3} />
+            <Image alt="banner3" src={Banner3} property="true" />
           </div>
           <div className="mx-1 rounded-md overflow-hidden">
-            <Image alt="banner4" src={Banner4} />
+            <Image alt="banner4" src={Banner4} property="true" />
           </div>
         </Carousel>
       </div>
