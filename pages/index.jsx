@@ -9,6 +9,7 @@ import SearchComponent from "../components/SearchComponent";
 // apollo
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 import Booksec from "../components/Booksec";
+import Layout from "../components/Layout";
 
 export default function Home({ books }) {
   return (
@@ -16,11 +17,12 @@ export default function Home({ books }) {
       <Head>
         <title>আল হেদায়া</title>
       </Head>
-      <Navbar />
-      <SearchComponent />
-      <Carousel />
-      <HomeCategory />
-      <Booksec title="Recent" data={books} />
+      <Layout>
+        <SearchComponent />
+        <Carousel />
+        <HomeCategory />
+        <Booksec title="Recent" data={books} />
+      </Layout>
     </>
   );
 }
