@@ -1,12 +1,16 @@
 // components
-import Navbar from "./Navbar";
+import Footer from "./Footer";
+import Header from "./Header";
+import SimpleHeader from "./SimpleHeader";
 
-const Layout = ({ children }) => {
+const Layout = ({ header = true, simpleHeader = false, children }) => {
   return (
     <>
       <div className="max-w-7xl mx-auto">
-        <Navbar />
+        {header && <Header />}
+        {simpleHeader && <SimpleHeader />}
         {children}
+        <Footer />
       </div>
     </>
   );

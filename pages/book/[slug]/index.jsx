@@ -8,6 +8,8 @@ import SearchComponent from "../../../components/SearchComponent";
 // apolloClient
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 import Link from "next/link";
+import { useState } from "react";
+import Booksec from "../../../components/Booksec";
 
 const BookPage = ({
   data,
@@ -19,26 +21,31 @@ const BookPage = ({
   imageURL,
   description,
   categories,
+  recentBooksData,
 }) => {
-  console.log({
-    data,
-    title,
-    price,
-    discountPrice,
-    publication,
-    authors,
-    imageURL,
-    description,
-    categories,
-  });
+  const [readMore, setReadMore] = useState(false);
+  // symble
+  const Symble = () => <span>৳</span>;
+
+  // console.log({
+  //   data,
+  //   title,
+  //   price,
+  //   discountPrice,
+  //   publication,
+  //   authors,
+  //   imageURL,
+  //   description,
+  //   categories,
+  // });
   return (
     <>
       <Head>
-        <title>{title}</title>
+        <title>{title} -আল হেদায়া</title>
       </Head>
-      <Layout>
+      <Layout header={false} simpleHeader={true}>
         <SearchComponent />
-        <div className="mt-8 pb-28">
+        <div className="mt-8 pb-8 px-4">
           {/* ------image */}
           <div className="flex justify-center">
             <Image
@@ -50,7 +57,7 @@ const BookPage = ({
             />
           </div>
           {/* ------details */}
-          <div className="px-4 py-8 flex flex-col gap-2">
+          <div className="py-8 flex flex-col gap-2">
             <h1 className="text-lg font-bold">{title}</h1>
             {/* close details */}
             <div>
@@ -73,9 +80,49 @@ const BookPage = ({
             </div>
             {/* description */}
 
-            <p className="text-slate-700">{description}</p>
+            <p className="text-slate-700">
+              {readMore ? description : description.substring(0, 250)}
+              {description.length > 250 && (
+                <span
+                  className="text-yellow-700 select-none cursor-pointer"
+                  onClick={() => setReadMore(!readMore)}
+                >
+                  {readMore ? " ...show less" : " ...read more"}
+                </span>
+              )}
+            </p>
+          </div>
+          {/* ------order section */}
+          <div>
+            {/* price */}
+            <div className="flex gap-2 items-center mt-1">
+              {discountPrice ? (
+                <>
+                  <span className="text-2xl text-baseGreen font-semibold">
+                    <Symble /> {discountPrice}
+                  </span>
+                  <s className="text-lg text-gray-600">
+                    <Symble /> {price}
+                  </s>
+                </>
+              ) : (
+                <span className="text-lg font-semibold text-baseGreen">
+                  <Symble /> {price}
+                </span>
+              )}
+            </div>
+            {/* buttons */}
+            <div className="my-4 flex gap-4">
+              <button className="text-lg bg-rose-700 text-white px-5 py-3 rounded-md">
+                অর্ডার করুন
+              </button>
+              <button className="text-lg bg-yellow-600 text-white px-5 py-3 rounded-md">
+                একটু পড়ে দেখুন
+              </button>
+            </div>
           </div>
         </div>
+        <Booksec data={recentBooksData} title="আরো দেখুন…" />
       </Layout>
     </>
   );
@@ -154,6 +201,36 @@ export const getStaticProps = async ({ params }) => {
     `,
     variables: { bookId },
   });
+
+  const recentBooksData = await client.query({
+    query: gql`
+      query Books {
+        posts(first: 8) {
+          edges {
+            node {
+              id
+              title
+              featuredImage {
+                node {
+                  sourceUrl
+                }
+              }
+              acf {
+                discountPrice
+                price
+                author {
+                  ... on Page {
+                    id
+                    title
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    `,
+  });
   return {
     props: {
       data: data.post,
@@ -165,6 +242,7 @@ export const getStaticProps = async ({ params }) => {
       imageURL: data.post.featuredImage.node.sourceUrl,
       description: data.post.acf.description,
       categories: data.post.categories.edges,
+      recentBooksData: recentBooksData.data.posts.edges,
     },
   };
 };

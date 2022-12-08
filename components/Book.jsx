@@ -9,7 +9,7 @@ const Book = ({ data: { node } }) => {
   return (
     <>
       <div>
-        <Link href={`book/${node.id}`}>
+        <Link href={`/book/${node.id}`}>
           {/* image */}
           <Image
             src={node.featuredImage.node.sourceUrl}
@@ -19,7 +19,7 @@ const Book = ({ data: { node } }) => {
             className="rounded-md mb-2"
           />
           {/* title */}
-          <h2 className="font-hindSiliguri text-md text-justify font-semibold">
+          <h2 className="font-hindSiliguri text-md font-semibold">
             {node.title}
           </h2>
           {/* author */}

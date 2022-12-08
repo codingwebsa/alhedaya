@@ -4,7 +4,6 @@ import Head from "next/head";
 import Carousel from "../components/Carousel";
 // components
 import HomeCategory from "../components/HomeCategory";
-import Navbar from "../components/Navbar";
 import SearchComponent from "../components/SearchComponent";
 // apollo
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";

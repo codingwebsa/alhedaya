@@ -10,8 +10,9 @@ export default function Document() {
           href="https://fonts.googleapis.com/css2?family=Hind+Siliguri&family=Nunito&display=swap"
           rel="stylesheet"
         />
+        <meta name="theme-color" content="#00C9A7" />
       </Head>
-      <body className="text-dark font-nunito">
+      <body className="text-dark font-hindSiliguri">
         <Main />
         <NextScript />
       </body>

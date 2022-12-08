@@ -1,6 +1,7 @@
 import Book from "./Book";
 
 const Booksec = ({ title, data }) => {
+  // console.log(data);
   return (
     <div className="flex flex-col">
       {title ? (
