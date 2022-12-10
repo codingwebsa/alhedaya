@@ -10,6 +10,7 @@ import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 import Link from "next/link";
 import { useState } from "react";
 import Booksec from "../../../components/Booksec";
+import { toast } from "react-hot-toast";
 
 const BookPage = ({
   data,
@@ -113,7 +114,10 @@ const BookPage = ({
             </div>
             {/* buttons */}
             <div className="my-4 flex gap-4">
-              <button className="text-lg bg-rose-700 text-white px-5 py-3 rounded-md">
+              <button
+                className="text-lg bg-rose-700 text-white px-5 py-3 rounded-md"
+                onClick={() => toast.success("Order Confirmed")}
+              >
                 অর্ডার করুন
               </button>
               <button className="text-lg bg-yellow-600 text-white px-5 py-3 rounded-md">
@@ -132,7 +136,7 @@ export default BookPage;
 
 export const getStaticPaths = async () => {
   const client = new ApolloClient({
-    uri: "http://alhidaya.local/graphql",
+    uri: "http://sa.local/graphql",
     cache: new InMemoryCache(),
   });
 
@@ -161,7 +165,7 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async ({ params }) => {
   const bookId = params.slug;
   const client = new ApolloClient({
-    uri: "http://alhidaya.local/graphql",
+    uri: `http://sa.local/graphql`,
     cache: new InMemoryCache(),
   });
 

@@ -1,30 +1,18 @@
-// next
-import Head from "next/head";
-// react multi carousel
-import Carousel from "../components/Carousel";
-// components
-import HomeCategory from "../components/HomeCategory";
-import SearchComponent from "../components/SearchComponent";
 // apollo
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
-import Booksec from "../components/Booksec";
-import Layout from "../components/Layout";
+import SearchComponent from "../components/SearchComponent";
 
-export default function Home({ books }) {
+const Search = ({ booksData }) => {
   return (
     <>
-      <Head>
-        <title>আল হেদায়া</title>
-      </Head>
-      <Layout>
+      <div>
         <SearchComponent />
-        <Carousel />
-        <HomeCategory />
-        <Booksec title="Recent" data={books} />
-      </Layout>
+      </div>
     </>
   );
-}
+};
+
+export default Search;
 
 export async function getStaticProps() {
   const client = new ApolloClient({
@@ -64,7 +52,7 @@ export async function getStaticProps() {
 
   return {
     props: {
-      books: data.posts.edges,
+      booksData: data.posts.edges,
     },
   };
 }

@@ -10,7 +10,7 @@ const HomeCategory = () => {
       <div className="my-6 mx-4 grid grid-cols-2 gap-y-2 gap-x-2">
         <Link
           href="/"
-          className="flex items-center gap-2 shadow-md p-2 rounded-lg bg-light"
+          className="flex items-center gap-2 shadow-md p-2 rounded-lg bg-light hover:text-emerald-700"
         >
           <Image
             src={CategoryImage}
@@ -21,7 +21,7 @@ const HomeCategory = () => {
         </Link>
         <Link
           href="/"
-          className="flex items-center gap-2 shadow-md p-2 rounded-lg bg-light"
+          className="flex items-center gap-2 shadow-md p-2 rounded-lg bg-light hover:text-emerald-700"
         >
           <Image
             src={CategoryImage}
@@ -32,7 +32,7 @@ const HomeCategory = () => {
         </Link>
         <Link
           href="/"
-          className="flex items-center gap-2 shadow-md p-2 rounded-lg bg-light"
+          className="flex items-center gap-2 shadow-md p-2 rounded-lg bg-light hover:text-emerald-700"
         >
           <Image
             src={CategoryImage}
@@ -43,7 +43,7 @@ const HomeCategory = () => {
         </Link>
         <Link
           href="/"
-          className="flex items-center gap-2 shadow-md p-2 rounded-lg bg-light"
+          className="flex items-center gap-2 shadow-md p-2 rounded-lg bg-light hover:text-emerald-700"
         >
           <Image
             src={CategoryImage}

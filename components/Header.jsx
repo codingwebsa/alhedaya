@@ -17,15 +17,16 @@ const Navbar = () => {
             <Link href="/" className="active:scale-[.9]" title="Home">
               <BiHome size={28} />
             </Link>
-            <Link href="/" className="active:scale-[.9]" title="Cart">
-              <AiOutlineShoppingCart size={28} />
+            <Link href="/" className="active:scale-[.9]" title="Books Section">
+              <CgSearch size={28} />
             </Link>
             <Link href="/" className="active:scale-[.9]" title="Menu">
               <CgMenuGridO size={28} />
             </Link>
-            <Link href="/" className="active:scale-[.9]" title="Books Section">
-              <CgSearch size={28} />
+            <Link href="/" className="active:scale-[.9]" title="Cart">
+              <AiOutlineShoppingCart size={28} />
             </Link>
+
             <Link href="/" className="active:scale-[.9]" title="User">
               <Image src="/user.svg" width={28} height={28} alt="user" />
             </Link>
