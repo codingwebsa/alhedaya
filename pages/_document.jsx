@@ -10,7 +10,7 @@ export default function Document() {
           href="https://fonts.googleapis.com/css2?family=Hind+Siliguri&family=Nunito&display=swap"
           rel="stylesheet"
         />
-        <meta name="theme-color" content="#00C9A7" />
+        <meta name="theme-color" content="#E8F3F1" />
       </Head>
       <body className="text-dark font-hindSiliguri">
         <Main />

@@ -6,6 +6,7 @@ import { CgSearch } from "react-icons/cg";
 const SearchComponent = () => {
   const router = useRouter();
   const inpRef = useRef();
+
   function handleSearch(e) {
     e.preventDefault();
     if (!inpRef.current.value) {

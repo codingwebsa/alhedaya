@@ -17,7 +17,7 @@ const Navbar = () => {
             <Link href="/" className="active:scale-[.9]" title="Home">
               <BiHome size={28} />
             </Link>
-            <Link href="/" className="active:scale-[.9]" title="Books Section">
+            <Link href="/search" className="active:scale-[.9]" title="Search">
               <CgSearch size={28} />
             </Link>
             <Link href="/" className="active:scale-[.9]" title="Menu">
