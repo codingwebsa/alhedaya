@@ -1,19 +1,17 @@
 // next
 import Image from "next/image";
 import Head from "next/head";
+import Link from "next/link";
 // components
-import Layout from "../../../components/Layout";
-// components
-import SearchComponent from "../../../components/SearchComponent";
+import { SearchComponent, Sidebar, Booksec, Layout } from "../../../components";
 // apolloClient
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
-import Link from "next/link";
+// react
 import { useState } from "react";
-import Booksec from "../../../components/Booksec";
+// react-hot-toast
 import { toast } from "react-hot-toast";
 
 const BookPage = ({
-  data,
   title,
   price,
   discountPrice,
@@ -28,17 +26,16 @@ const BookPage = ({
   // symble
   const Symble = () => <span>৳</span>;
 
-  // console.log({
-  //   data,
-  //   title,
-  //   price,
-  //   discountPrice,
-  //   publication,
-  //   authors,
-  //   imageURL,
-  //   description,
-  //   categories,
-  // });
+  function handleOrder() {
+    toast("Order Placed", {
+      icon: "📚",
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+    });
+  }
   return (
     <>
       <Head>
@@ -64,7 +61,10 @@ const BookPage = ({
             <div>
               <span className="flex gap-2">
                 <p>লেখক :</p>
-                <Link href={authors[0].id} className="text-yellow-700">
+                <Link
+                  href={`/author/${authors[0].id}`}
+                  className="text-yellow-700"
+                >
                   {authors[0].title}
                 </Link>
               </span>
@@ -74,7 +74,10 @@ const BookPage = ({
               </span>
               <span className="flex gap-2">
                 <p>বিষয় :</p>
-                <Link href={categories[0].node.id} className="text-yellow-700">
+                <Link
+                  href={`/categories/${categories[0].node.id}`}
+                  className="text-yellow-700"
+                >
                   {categories[0].node.name}
                 </Link>
               </span>
@@ -99,15 +102,15 @@ const BookPage = ({
             <div className="flex gap-2 items-center mt-1">
               {discountPrice ? (
                 <>
-                  <span className="text-2xl text-baseGreen font-semibold">
+                  <span className="text-3xl text-baseGreen font-semibold">
                     <Symble /> {discountPrice}
                   </span>
-                  <s className="text-lg text-gray-600">
+                  <s className="text-xl text-gray-600">
                     <Symble /> {price}
                   </s>
                 </>
               ) : (
-                <span className="text-lg font-semibold text-baseGreen">
+                <span className="text-3xl font-semibold text-baseGreen">
                   <Symble /> {price}
                 </span>
               )}
@@ -116,7 +119,7 @@ const BookPage = ({
             <div className="my-4 flex gap-4">
               <button
                 className="text-lg bg-rose-700 text-white px-5 py-3 rounded-md"
-                onClick={() => toast.success("Order Confirmed")}
+                onClick={() => handleOrder()}
               >
                 অর্ডার করুন
               </button>

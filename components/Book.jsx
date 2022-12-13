@@ -23,7 +23,7 @@ const Book = ({ data }) => {
             {data.node.title}
           </h2>
           {/* author */}
-          {data.node.acf.author[0] && (
+          {data.node.acf.author?.[0] && (
             <p className="text-xs text-gray-600">
               {data.node.acf.author[0].title}
             </p>

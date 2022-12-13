@@ -3,14 +3,11 @@ import Head from "next/head";
 // react multi carousel
 import Carousel from "../components/Carousel";
 // components
-import HomeCategory from "../components/HomeCategory";
-import SearchComponent from "../components/SearchComponent";
+import { HomeCategory, SearchComponent, Booksec, Layout } from "../components";
 // apollo
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
-import Booksec from "../components/Booksec";
-import Layout from "../components/Layout";
 
-export default function Home({ books }) {
+export default function Home({ books, homeCategoryData }) {
   return (
     <>
       <Head>
@@ -19,8 +16,8 @@ export default function Home({ books }) {
       <Layout>
         <SearchComponent />
         <Carousel />
-        <HomeCategory />
-        <Booksec title="Recent" data={books} />
+        <HomeCategory data={homeCategoryData} />
+        <Booksec title="Recent Books" data={books} />
       </Layout>
     </>
   );
@@ -28,7 +25,7 @@ export default function Home({ books }) {
 
 export async function getStaticProps() {
   const client = new ApolloClient({
-    uri: `http://sa.local/graphql`,
+    uri: process.env.WORDPRESS_ENDPOINT,
     cache: new InMemoryCache(),
   });
 
@@ -61,10 +58,25 @@ export async function getStaticProps() {
       }
     `,
   });
+  const homeCategoryData = await client.query({
+    query: gql`
+      query HomeCategories {
+        categories(last: 4) {
+          edges {
+            node {
+              id
+              name
+            }
+          }
+        }
+      }
+    `,
+  });
 
   return {
     props: {
       books: data.posts.edges,
+      homeCategoryData: homeCategoryData.data.categories.edges,
     },
   };
 }

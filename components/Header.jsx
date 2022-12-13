@@ -11,7 +11,7 @@ import { CgSearch } from "react-icons/cg";
 const Navbar = () => {
   return (
     <>
-      <header className="fixed bottom-0 w-full z-[999]">
+      <header className="fixed bottom-0 w-full z-[999] rounded-t-2xl">
         <div className="max-w-xl mx-auto">
           <nav className="grid grid-cols-5 h-[9vh] place-items-center text-dark bg-white border-t-2 border-baseGreen rounded-t-2xl">
             <Link href="/" className="active:scale-[.9]" title="Home">

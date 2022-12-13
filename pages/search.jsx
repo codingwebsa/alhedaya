@@ -27,6 +27,9 @@ const Search = ({ booksData }) => {
         <Header />
         <SearchComponent />
         <Booksec data={modifiedData} />
+        {!query && (
+          <h1 className="text-xl text-center">Please search something!</h1>
+        )}
       </div>
     </>
   );
@@ -36,7 +39,7 @@ export default Search;
 
 export async function getStaticProps() {
   const client = new ApolloClient({
-    uri: `http://sa.local/graphql`,
+    uri: process.env.WORDPRESS_ENDPOINT,
     cache: new InMemoryCache(),
   });
 
