@@ -8,6 +8,8 @@ import { Booksec, Layout, SearchComponent } from "../../../components";
 import Fuse from "fuse.js";
 
 const AuthorSingle = ({ data, authorName }) => {
+  console.log(data);
+  console.log(authorName);
   return (
     <>
       <Head>
@@ -53,45 +55,45 @@ export const getStaticPaths = async () => {
 
 export async function getStaticProps({ params }) {
   const { slug } = params;
+  //
   const modifiedData = [];
-  let authorName;
+  let authorName = "";
 
   const client = new ApolloClient({
     uri: process.env.WORDPRESS_ENDPOINT,
     cache: new InMemoryCache(),
   });
-
+  // apollo data
   const { data } = await client.query({
     query: gql`
       query AllAuthorDetails {
-        posts {
-          edges {
-            node {
-              title
-              excerpt
-              categories {
-                edges {
-                  node {
-                    id
-                    name
-                  }
-                }
-              }
-              featuredImage {
+        posts(first: 10000) {
+          nodes {
+            title
+            excerpt
+            categories {
+              edges {
                 node {
-                  sourceUrl
+                  id
+                  name
                 }
               }
-              acf {
-                discountPrice
-                price
-                description
-                publication
-                author {
-                  ... on Page {
-                    id
-                    title
-                  }
+            }
+            featuredImage {
+              node {
+                sourceUrl
+              }
+            }
+            acf {
+              imgurl
+              discountPrice
+              price
+              description
+              publication
+              author {
+                ... on Page {
+                  id
+                  title
                 }
               }
             }
@@ -100,18 +102,18 @@ export async function getStaticProps({ params }) {
       }
     `,
   });
-
-  const fuse = new Fuse(data.posts.edges, {
-    keys: ["node.acf.author.id"],
+  // init fuse
+  const fuse = new Fuse(data.posts.nodes, {
+    keys: ["acf.author.id"],
   });
-
+  // get fuse Data
   const fuseData = fuse.search(slug);
-  // loop
+  // loop to modify data
   fuseData.forEach((fuseD) => {
-    fuseD.item.node.acf.author.forEach((a) => {
+    fuseD.item.acf.author.forEach((a) => {
       if (a.id == slug) {
-        modifiedData.push(data.posts.edges[fuseD.refIndex]);
-        authorName = a.title;
+        modifiedData.push(data.posts.nodes[fuseD.refIndex]);
+        authorName = a.title || a.name;
       }
     });
   });

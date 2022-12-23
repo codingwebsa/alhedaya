@@ -6,12 +6,19 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "build-export": "next build && next export"
   },
   "dependencies": {
     "@apollo/client": "^3.7.1",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/icons-material": "^5.11.0",
+    "@mui/material": "^5.11.1",
+    "@mui/x-data-grid": "^5.17.16",
     "eslint": "8.29.0",
     "eslint-config-next": "13.0.6",
+    "firebase": "^9.15.0",
     "fuse.js": "^6.6.2",
     "graphql": "^16.6.0",
     "next": "13.0.6",
@@ -19,7 +26,9 @@
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.0",
     "react-icons": "^4.7.1",
-    "react-multi-carousel": "^2.8.2"
+    "react-multi-carousel": "^2.8.2",
+    "react-secure-storage": "^1.0.21",
+    "sharp": "^0.31.2"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",

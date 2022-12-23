@@ -9,39 +9,37 @@ const Book = ({ data }) => {
   return (
     <>
       <div>
-        <Link href={`/book/${data.node.id}`}>
+        <Link href={`/book/${data.id}`}>
           {/* image */}
           <Image
-            src={data.node.featuredImage.node.sourceUrl}
+            src={data.acf.imgurl}
             width={256}
             height={81}
-            alt={data.node.title}
+            alt={data.title}
             className="rounded-md mb-2 hover:brightness-90"
           />
           {/* title */}
           <h2 className="font-hindSiliguri text-md font-semibold">
-            {data.node.title}
+            {data.title}
           </h2>
           {/* author */}
-          {data.node.acf.author?.[0] && (
-            <p className="text-xs text-gray-600">
-              {data.node.acf.author[0].title}
-            </p>
+          {data.acf.author?.[0] && (
+            <p className="text-xs text-gray-600">{data.acf.author[0].title}</p>
           )}
           {/* price */}
           <div className="flex gap-2 items-center mt-1">
-            {data.node.acf.discountPrice ? (
+            {data.acf.discountPrice ? (
               <>
                 <span className="text-lg text-baseGreen font-semibold">
-                  <Symble /> {data.node.acf.discountPrice}
+                  <Symble /> {data.acf.discountPrice}
                 </span>
                 <s className="text-sm text-gray-600">
-                  <Symble /> {data.node.acf.price}
+                  <Symble /> {data.acf.price}
                 </s>
               </>
             ) : (
               <span className="text-lg font-semibold text-baseGreen">
-                <Symble /> {data.node.acf.price}
+                <Symble /> {data.acf.price}
               </span>
             )}
           </div>

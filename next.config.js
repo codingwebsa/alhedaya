@@ -2,7 +2,13 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["alhidaya.local", "sa.local"],
+    domains: [
+      "alhidaya.local",
+      "sa.local",
+      "lh3.googleusercontent.com",
+      "res.cloudinary.com",
+    ],
+    unoptimized: true,
   },
 };
 

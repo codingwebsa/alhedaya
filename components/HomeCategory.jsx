@@ -5,6 +5,7 @@ import Link from "next/link";
 import CategoryImage from "../assets/category1.jpg";
 
 const HomeCategory = ({ data }) => {
+  // console.log(data);
   return (
     <>
       <div className="m-4 grid grid-cols-2 gap-y-2 gap-x-2">

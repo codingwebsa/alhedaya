@@ -6,7 +6,6 @@ import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
 import { Layout, SearchComponent } from "../../components";
 
 const Author = ({ AuthorsData }) => {
-  console.log(AuthorsData);
   return (
     <>
       <Layout>
@@ -42,7 +41,7 @@ export async function getStaticProps() {
   const { data } = await client.query({
     query: gql`
       query Authors {
-        pages {
+        pages(first: 10000) {
           edges {
             node {
               id

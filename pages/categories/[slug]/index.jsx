@@ -6,7 +6,6 @@ import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
 import { SearchComponent, Header, Booksec } from "../../../components";
 
 const CategorySingle = ({ data }) => {
-  console.log(data);
   return (
     <>
       <Head>
@@ -14,7 +13,7 @@ const CategorySingle = ({ data }) => {
       </Head>
       <SearchComponent />
       <Header />
-      <Booksec title={`Category: ${data.name}`} data={data.posts.edges} />
+      <Booksec title={`Category: ${data.name}`} data={data.posts.nodes} />
     </>
   );
 };
@@ -30,7 +29,7 @@ export const getStaticPaths = async () => {
   const { data } = await client.query({
     query: gql`
       query Categories {
-        categories {
+        categories(first: 10000) {
           edges {
             node {
               id
@@ -63,23 +62,17 @@ export async function getStaticProps({ params }) {
         category(id: $slug) {
           name
           posts {
-            edges {
-              node {
-                id
-                title
-                featuredImage {
-                  node {
-                    sourceUrl
-                  }
-                }
-                acf {
-                  discountPrice
-                  price
-                  author {
-                    ... on Page {
-                      id
-                      title
-                    }
+            nodes {
+              id
+              title
+              acf {
+                imgurl
+                discountPrice
+                price
+                author {
+                  ... on Page {
+                    id
+                    title
                   }
                 }
               }

@@ -1,3 +1,5 @@
+// react
+import { useContext, useEffect } from "react";
 // next
 import Head from "next/head";
 // react multi carousel
@@ -5,7 +7,9 @@ import Carousel from "../components/Carousel";
 // components
 import { HomeCategory, SearchComponent, Booksec, Layout } from "../components";
 // apollo
-import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
+import { gql } from "@apollo/client";
+// client
+import Client from "../apolloClient";
 
 export default function Home({ books, homeCategoryData }) {
   return (
@@ -24,44 +28,39 @@ export default function Home({ books, homeCategoryData }) {
 }
 
 export async function getStaticProps() {
-  const client = new ApolloClient({
-    uri: process.env.WORDPRESS_ENDPOINT,
-    cache: new InMemoryCache(),
-  });
-
-  const { data } = await client.query({
-    query: gql`
-      query Books {
-        posts {
-          edges {
+  const GET_BOOKS_QUERY = gql`
+    query Books {
+      posts(first: 10) {
+        nodes {
+          id
+          title
+          featuredImage {
             node {
-              id
-              title
-              featuredImage {
-                node {
-                  sourceUrl
-                }
-              }
-              acf {
-                discountPrice
-                price
-                author {
-                  ... on Page {
-                    id
-                    title
-                  }
-                }
+              sourceUrl
+            }
+          }
+          acf {
+            imgurl
+            discountPrice
+            price
+            author {
+              ... on Page {
+                id
+                title
               }
             }
           }
         }
       }
-    `,
+    }
+  `;
+  const { data } = await Client.query({
+    query: GET_BOOKS_QUERY,
   });
-  const homeCategoryData = await client.query({
+  const homeCategoryData = await Client.query({
     query: gql`
       query HomeCategories {
-        categories(last: 4) {
+        categories(first: 4) {
           edges {
             node {
               id
@@ -75,7 +74,7 @@ export async function getStaticProps() {
 
   return {
     props: {
-      books: data.posts.edges,
+      books: data.posts.nodes,
       homeCategoryData: homeCategoryData.data.categories.edges,
     },
   };

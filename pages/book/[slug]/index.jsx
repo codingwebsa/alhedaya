@@ -3,15 +3,18 @@ import Image from "next/image";
 import Head from "next/head";
 import Link from "next/link";
 // components
-import { SearchComponent, Sidebar, Booksec, Layout } from "../../../components";
+import { SearchComponent, Booksec, Layout } from "../../../components";
 // apolloClient
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 // react
-import { useState } from "react";
+import { useContext, useState } from "react";
 // react-hot-toast
 import { toast } from "react-hot-toast";
+// context
+import { GlobalContext } from "../../../context/GlobalContext";
 
 const BookPage = ({
+  data,
   title,
   price,
   discountPrice,
@@ -23,10 +26,14 @@ const BookPage = ({
   recentBooksData,
 }) => {
   const [readMore, setReadMore] = useState(false);
+  const { cartItems, setCartItems } = useContext(GlobalContext);
   // symble
   const Symble = () => <span>৳</span>;
 
-  function handleOrder() {
+  function handleOrder(data) {
+    console.log(data);
+    setCartItems([...cartItems, { data: data.post, quantity: 1 }]);
+
     toast("Order Placed", {
       icon: "📚",
       style: {
@@ -36,6 +43,7 @@ const BookPage = ({
       },
     });
   }
+
   return (
     <>
       <Head>
@@ -119,7 +127,7 @@ const BookPage = ({
             <div className="my-4 flex gap-4">
               <button
                 className="text-lg bg-rose-700 text-white px-5 py-3 rounded-md"
-                onClick={() => handleOrder()}
+                onClick={() => handleOrder(data)}
               >
                 অর্ডার করুন
               </button>
@@ -147,10 +155,8 @@ export const getStaticPaths = async () => {
     query: gql`
       query Books {
         posts {
-          edges {
-            node {
-              id
-            }
+          nodes {
+            id
           }
         }
       }
@@ -158,8 +164,8 @@ export const getStaticPaths = async () => {
   });
   // books.data.posts.edges
   return {
-    paths: data.posts.edges.map((edge) => ({
-      params: { slug: edge.node.id },
+    paths: data.posts.nodes.map((node) => ({
+      params: { slug: node.id },
     })),
     fallback: false,
   };
@@ -176,8 +182,8 @@ export const getStaticProps = async ({ params }) => {
     query: gql`
       query BookDetails($bookId: ID!) {
         post(id: $bookId) {
+          id
           title
-          excerpt
           categories {
             edges {
               node {
@@ -186,12 +192,8 @@ export const getStaticProps = async ({ params }) => {
               }
             }
           }
-          featuredImage {
-            node {
-              sourceUrl
-            }
-          }
           acf {
+            imgurl
             discountPrice
             price
             description
@@ -212,24 +214,18 @@ export const getStaticProps = async ({ params }) => {
   const recentBooksData = await client.query({
     query: gql`
       query Books {
-        posts(first: 8) {
-          edges {
-            node {
-              id
-              title
-              featuredImage {
-                node {
-                  sourceUrl
-                }
-              }
-              acf {
-                discountPrice
-                price
-                author {
-                  ... on Page {
-                    id
-                    title
-                  }
+        posts(first: 10) {
+          nodes {
+            id
+            title
+            acf {
+              imgurl
+              discountPrice
+              price
+              author {
+                ... on Page {
+                  id
+                  title
                 }
               }
             }
@@ -240,16 +236,16 @@ export const getStaticProps = async ({ params }) => {
   });
   return {
     props: {
-      data: data.post,
+      data: data,
       title: data.post.title,
       price: data.post.acf.price,
       discountPrice: data.post.acf.discountPrice,
       publication: data.post.acf.publication,
       authors: data.post.acf.author,
-      imageURL: data.post.featuredImage.node.sourceUrl,
+      imageURL: data.post.acf.imgurl,
       description: data.post.acf.description,
       categories: data.post.categories.edges,
-      recentBooksData: recentBooksData.data.posts.edges,
+      recentBooksData: recentBooksData.data.posts.nodes,
     },
   };
 };

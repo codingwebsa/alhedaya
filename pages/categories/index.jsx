@@ -38,7 +38,7 @@ export async function getStaticProps() {
   const { data } = await client.query({
     query: gql`
       query Categories {
-        categories {
+        categories(first: 100) {
           edges {
             node {
               name
