@@ -19,9 +19,9 @@ export const GlobalContextProvider = ({ children }) => {
   useEffect(() => {
     // total
     // console.log(cartItems);
-    cartItems.forEach((item) => {
-      let _discountPrice = item.data.acf.discountPrice;
-      let _price = item.data.acf.price;
+    cartItems?.forEach((item) => {
+      let _discountPrice = item.acf.discountPrice;
+      let _price = item.acf.price;
 
       priceArray.push(_discountPrice || _price);
     });

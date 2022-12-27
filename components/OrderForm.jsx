@@ -4,20 +4,24 @@ import {
   CircularProgress,
   TextField,
 } from "@mui/material";
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { GlobalContext } from "../context/globalContext";
 import { addDoc } from "firebase/firestore";
 import { orderCollertionRef } from "../firebase.config";
+// email js
+import emailjs from "@emailjs/browser";
 
 const OrderForm = () => {
   const [loading, setLoading] = useState(false);
   const { user, cartItems } = useContext(GlobalContext);
+  const formRef = useRef();
 
   const cityptions = ["Dhaka", "Rajshahi"];
   const areaOptions = ["Godagari", "Carghat"];
 
   function handleSunmit(e) {
     e.preventDefault();
+    setLoading(true);
     // console.log(cartItems);
 
     const name = e.target.name.value;
@@ -30,7 +34,11 @@ const OrderForm = () => {
     const zone = e.target.zone.value;
 
     async function addDataToFirestore() {
+      setLoading(true);
+
       try {
+        setLoading(true);
+
         const docRef = await addDoc(orderCollertionRef, {
           name,
           phoneNum,
@@ -46,13 +54,27 @@ const OrderForm = () => {
         // console.log(docRef);
       } catch (error) {}
     }
-    // addDataToFirestore();
-
+    addDataToFirestore();
     setLoading(true);
 
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000);
+    emailjs
+      .sendForm(
+        "service_vger1bp",
+        "template_9b92ise",
+        formRef.current,
+        "EPDakJSwpBnKoxtqA"
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+          formRef.current.reset();
+        },
+        (error) => {
+          console.log(error.text);
+        }
+      );
+
+    setLoading(false);
   }
 
   if (loading)
@@ -69,7 +91,7 @@ const OrderForm = () => {
 
   return (
     <>
-      <form onSubmit={handleSunmit}>
+      <form onSubmit={handleSunmit} ref={formRef}>
         <h2 className="py-4 text-2xl font-bold">Your Details</h2>
         <div>
           <div className="py-3">

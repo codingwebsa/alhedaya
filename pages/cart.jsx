@@ -50,10 +50,9 @@ const Cart = () => {
                   <div class="flow-root">
                     <ul class="-my-8">
                       {cartItems?.map((item, _i) => {
-                        let imageURL = item?.data.acf.imgurl;
-                        let discountPrice = item?.data.acf.discountPrice;
-                        let price = item?.data.acf.price;
-                        let QNT = item?.quantity;
+                        let imageURL = item?.acf.imgurl;
+                        let discountPrice = item?.acf.discountPrice;
+                        let price = item?.acf.price;
                         return (
                           <li
                             class="flex  gap-x-3 py-6 text-left sm:flex-row sm:space-x-5 sm:space-y-0"
@@ -71,7 +70,7 @@ const Cart = () => {
                               <div class="sm:col-gap-5 sm:grid sm:grid-cols-2">
                                 <div class="pr-8 sm:pr-5">
                                   <p class="text-base font-semibold text-gray-900">
-                                    {item.data.title}
+                                    {item.title}
                                   </p>
                                   {/* <br />
                                   <p>Quantity: {QNT}</p> */}

@@ -19,6 +19,7 @@ import { NextSeo } from "next-seo";
 import { data as booksData } from "../../../data/booksData";
 
 const BookPage = ({
+  data,
   title,
   price,
   discountPrice,
@@ -34,9 +35,9 @@ const BookPage = ({
   // symble
   const Symble = () => <span>৳</span>;
 
-  // console.log(data);
+  console.log(data);
   function handleOrder(data) {
-    setCartItems([...cartItems, { data }]);
+    setCartItems([...cartItems, data]);
 
     toast("Added to cart", {
       icon: "📚",
@@ -192,6 +193,7 @@ export const getStaticProps = async ({ params }) => {
   const categories = data?.categories.nodes;
   return {
     props: {
+      data,
       title,
       price,
       discountPrice,
