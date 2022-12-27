@@ -10,7 +10,6 @@ const Dashboard = () => {
         <title>Dashboard</title>
       </Head>
       <Layout>
-        <MUINavbar />
         <MUITable />
       </Layout>
     </>
