@@ -10,7 +10,7 @@ import { CgSearch } from "react-icons/cg";
 // react
 import { useContext } from "react";
 // context
-import { GlobalContext } from "../context/GlobalContext";
+import { GlobalContext } from "../context/globalContext";
 // MUI
 import { Tooltip } from "@mui/material";
 

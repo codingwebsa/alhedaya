@@ -5,7 +5,7 @@ import Image from "next/image";
 // react
 import { useContext } from "react";
 // context
-import { GlobalContext } from "../context/GlobalContext";
+import { GlobalContext } from "../context/globalContext";
 // components
 import { Layout, OrderForm } from "../components";
 // assets

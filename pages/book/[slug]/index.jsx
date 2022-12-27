@@ -12,7 +12,7 @@ import { useContext, useState } from "react";
 // react-hot-toast
 import { toast } from "react-hot-toast";
 // context
-import { GlobalContext } from "../../../context/GlobalContext";
+import { GlobalContext } from "../../../context/globalContext";
 // NEXT SEO
 import { NextSeo } from "next-seo";
 // data

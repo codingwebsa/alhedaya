@@ -5,7 +5,7 @@ import {
   TextField,
 } from "@mui/material";
 import { useContext, useState } from "react";
-import { GlobalContext } from "../context/GlobalContext";
+import { GlobalContext } from "../context/globalContext";
 import { addDoc } from "firebase/firestore";
 import { orderCollertionRef } from "../firebase.config";
 

@@ -5,7 +5,7 @@ import { Layout, SigninPageComponent, SignoutComponent } from "../components";
 // react
 import { useContext } from "react";
 // context
-import { GlobalContext } from "../context/GlobalContext";
+import { GlobalContext } from "../context/globalContext";
 
 const Account = () => {
   const { user } = useContext(GlobalContext);
