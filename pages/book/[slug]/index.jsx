@@ -76,7 +76,6 @@ const BookPage = ({
           <div className="flex justify-center">
             <Image
               src={imageURL}
-              loader={imageURL}
               blurDataURL={imageURL}
               placeholder="blur"
               width={300}
