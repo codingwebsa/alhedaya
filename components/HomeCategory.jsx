@@ -20,7 +20,9 @@ const HomeCategory = ({ data }) => {
               className="h-8 w-8 rounded-full"
               alt="ইতিহাস"
             />
-            <p className="text-md underline font-semibold">{d.node.name}</p>
+            <p className="text-md underline font-semibold line-clamp-1">
+              {d.node.name}
+            </p>
           </Link>
         ))}
         <div className="col-span-2 flex justify-center items-center">

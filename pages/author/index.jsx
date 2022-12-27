@@ -4,14 +4,16 @@ import Link from "next/link";
 import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
 // components
 import { Layout, SearchComponent } from "../../components";
+// data
+import { data as authorsData } from "../../data/authorsData";
 
-const Author = ({ AuthorsData }) => {
+const Author = () => {
   return (
     <>
       <Layout>
         <SearchComponent />
         <div className="py-6 grid grid-cols-1 gap-3 px-2">
-          {AuthorsData.map((authordata) => {
+          {authorsData.map((authordata) => {
             if (authordata.node.title == "Unknown") return;
             return (
               <div
@@ -32,30 +34,30 @@ const Author = ({ AuthorsData }) => {
 
 export default Author;
 
-export async function getStaticProps() {
-  const client = new ApolloClient({
-    uri: process.env.WORDPRESS_ENDPOINT,
-    cache: new InMemoryCache(),
-  });
+// export async function getStaticProps() {
+//   const client = new ApolloClient({
+//     uri: process.env.WORDPRESS_ENDPOINT,
+//     cache: new InMemoryCache(),
+//   });
 
-  const { data } = await client.query({
-    query: gql`
-      query Authors {
-        pages(first: 10000) {
-          edges {
-            node {
-              id
-              title
-            }
-          }
-        }
-      }
-    `,
-  });
+//   const { data } = await client.query({
+//     query: gql`
+//       query Authors {
+//         pages(first: 10000) {
+//           edges {
+//             node {
+//               id
+//               title
+//             }
+//           }
+//         }
+//       }
+//     `,
+//   });
 
-  return {
-    props: {
-      AuthorsData: data.pages.edges,
-    },
-  };
-}
+//   return {
+//     props: {
+//       AuthorsData: data.pages.edges,
+//     },
+//   };
+// }

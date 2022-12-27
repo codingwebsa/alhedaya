@@ -1,27 +1,45 @@
 // next
-import Link from "next/link";
+// import Link from "next/link";
+import Image from "next/image";
+
 // react
 import { useContext } from "react";
 // context
 import { GlobalContext } from "../context/GlobalContext";
 // components
-import { Layout } from "../components";
+import { Layout, OrderForm } from "../components";
+// assets
+import EmptyCartSVG from "../assets/svg/empty-cart.svg";
+// icons
+import { MdDelete } from "react-icons/md";
+import Head from "next/head";
 
 const Cart = () => {
   const { cartItems, subTotal, ShipingFee, total, setCartItems } =
     useContext(GlobalContext);
 
-  function decrimentQnt(index) {}
-  function incrementQnt(index) {}
   function removeItem(index) {
     setCartItems(cartItems.filter((_, i) => i != index));
   }
 
+  if (cartItems.length == 0)
+    return (
+      <Layout>
+        <div className="h-screen flex flex-col gap-10 items-center justify-center px-4">
+          <h2 className="text-xl font-bold">Your Cart is Empty</h2>
+          <Image src={EmptyCartSVG} height={400} width={400} />
+        </div>
+      </Layout>
+    );
+
   return (
     <>
-      <Layout>
+      <Head>
+        <title>Cart</title>
+      </Head>
+      <Layout footer={false}>
         <section class="h-screen bg-gray-100 py-12 sm:py-16 lg:py-20">
-          <div class="mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="mx-auto px-4 sm:px-6 lg:px-8 pb-20">
             <div class="flex items-center justify-center">
               <h1 class="text-2xl font-semibold text-gray-900">Your Cart</h1>
             </div>
@@ -74,21 +92,7 @@ const Cart = () => {
                                   type="button"
                                   class="flex rounded p-2 text-center text-gray-500 transition-all duration-200 ease-in-out focus:shadow hover:text-gray-900"
                                 >
-                                  <svg
-                                    class="h-5 w-5"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                  >
-                                    <path
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                      stroke-width="2"
-                                      d="M6 18L18 6M6 6l12 12"
-                                      class=""
-                                    ></path>
-                                  </svg>
+                                  <MdDelete size={20} color="#be123c" />
                                 </button>
                               </div>
                             </div>
@@ -120,28 +124,11 @@ const Cart = () => {
                     </p>
                   </div>
 
-                  <div class="mt-6 text-center">
-                    <button
-                      type="button"
-                      class="group inline-flex w-full items-center justify-center rounded-md bg-gray-900 px-6 py-4 text-lg font-semibold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-gray-800"
-                    >
-                      Checkout
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="group-hover:ml-8 ml-4 h-6 w-6 transition-all"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        stroke-width="2"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M13 7l5 5m0 0l-5 5m5-5H6"
-                        />
-                      </svg>
-                    </button>
+                  {/*  */}
+                  <div className="py-10">
+                    <OrderForm />
                   </div>
+                  {/*  */}
                 </div>
               </div>
             </div>

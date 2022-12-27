@@ -4,16 +4,21 @@ import Head from "next/head";
 import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
 // components
 import { SearchComponent, Header, Booksec } from "../../../components";
+// data
+import { data as categoryData } from "../../../data/categoryData";
+import { data as booksData } from "../../../data/booksData";
+// fuse
+import Fuse from "fuse.js";
 
-const CategorySingle = ({ data }) => {
+const CategorySingle = ({ title, data }) => {
   return (
     <>
       <Head>
-        <title>{`Category: ${data.name}`}</title>
+        <title>{`Category: ${title}`}</title>
       </Head>
       <SearchComponent />
       <Header />
-      <Booksec title={`Category: ${data.name}`} data={data.posts.nodes} />
+      <Booksec title={`Category: ${title}`} data={data} />
     </>
   );
 };
@@ -21,28 +26,9 @@ const CategorySingle = ({ data }) => {
 export default CategorySingle;
 
 export const getStaticPaths = async () => {
-  const client = new ApolloClient({
-    uri: "http://sa.local/graphql",
-    cache: new InMemoryCache(),
-  });
-
-  const { data } = await client.query({
-    query: gql`
-      query Categories {
-        categories(first: 10000) {
-          edges {
-            node {
-              id
-            }
-          }
-        }
-      }
-    `,
-  });
-  // books.data.posts.edges
   return {
-    paths: data.categories.edges.map((edge) => ({
-      params: { slug: edge.node.id },
+    paths: categoryData.map((data) => ({
+      params: { slug: data.node.id },
     })),
     fallback: false,
   };
@@ -51,42 +37,59 @@ export const getStaticPaths = async () => {
 export async function getStaticProps({ params }) {
   const { slug } = params;
 
-  const client = new ApolloClient({
-    uri: process.env.WORDPRESS_ENDPOINT,
-    cache: new InMemoryCache(),
-  });
+  const modifiedData = [];
+  let categoryName = "";
 
-  const { data } = await client.query({
-    query: gql`
-      query Categories($slug: ID!) {
-        category(id: $slug) {
-          name
-          posts {
-            nodes {
-              id
-              title
-              acf {
-                imgurl
-                discountPrice
-                price
-                author {
-                  ... on Page {
-                    id
-                    title
-                  }
-                }
-              }
-            }
-          }
-        }
+  // const client = new ApolloClient({
+  //   uri: process.env.WORDPRESS_ENDPOINT,
+  //   cache: new InMemoryCache(),
+  // });
+
+  // const { data } = await client.query({
+  //   query: gql`
+  //     query Categories($slug: ID!) {
+  //       category(id: $slug) {
+  //         name
+  //         posts {
+  //           nodes {
+  //             id
+  //             title
+  //             acf {
+  //               imgurl
+  //               discountPrice
+  //               price
+  //               author {
+  //                 ... on Page {
+  //                   id
+  //                   title
+  //                 }
+  //               }
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   `,
+  //   variables: { slug },
+  // });
+  const fuse = new Fuse(booksData, {
+    keys: ["categories.nodes.id"],
+  });
+  // get fuse Data
+  const fuseData = fuse.search(slug);
+  // loop to modify data
+  fuseData.forEach((fuseD) => {
+    fuseD.item.categories.nodes.forEach((category) => {
+      if (category.id == slug) {
+        modifiedData.push(booksData[fuseD.refIndex]);
+        categoryName = category.title || category.name;
       }
-    `,
-    variables: { slug },
+    });
   });
-
   return {
     props: {
-      data: data.category,
+      data: modifiedData,
+      title: categoryName,
     },
   };
 }

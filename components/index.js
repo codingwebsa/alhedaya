@@ -8,6 +8,7 @@ export { default as Layout } from "./Layout";
 export { default as MUINavbar } from "./MUINavbar";
 export { default as MUITable } from "./MUITable";
 export { default as NewSearchCom } from "./NewSearchCom";
+export { default as OrderForm } from "./OrderForm";
 export { default as SearchComponent } from "./SearchComponent";
 export { default as Sidebar } from "./Sidebar";
 export { default as SigninPageComponent } from "./SigninPageComponent";

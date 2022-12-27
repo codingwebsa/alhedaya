@@ -1,6 +1,7 @@
 // next
 import Image from "next/image";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import Link from "next/link";
 // components
 import { SearchComponent, Booksec, Layout } from "../../../components";
@@ -12,9 +13,12 @@ import { useContext, useState } from "react";
 import { toast } from "react-hot-toast";
 // context
 import { GlobalContext } from "../../../context/GlobalContext";
+// NEXT SEO
+import { NextSeo } from "next-seo";
+// data
+import { data as booksData } from "../../../data/booksData";
 
 const BookPage = ({
-  data,
   title,
   price,
   discountPrice,
@@ -30,15 +34,16 @@ const BookPage = ({
   // symble
   const Symble = () => <span>৳</span>;
 
+  // console.log(data);
   function handleOrder(data) {
-    console.log(data);
-    setCartItems([...cartItems, { data: data.post, quantity: 1 }]);
+    setCartItems([...cartItems, { data }]);
 
-    toast("Order Placed", {
+    toast("Added to cart", {
       icon: "📚",
       style: {
-        borderRadius: "10px",
-        background: "#333",
+        borderRadius: "200px",
+        padding: "12px 20px",
+        background: "#252c33",
         color: "#fff",
       },
     });
@@ -46,9 +51,24 @@ const BookPage = ({
 
   return (
     <>
-      <Head>
-        <title>{title} -আল হেদায়া</title>
-      </Head>
+      <NextSeo
+        title={`${title} - আল হেদায়া`}
+        description={description.substring(0, 100)}
+        canonical="https://www.canonical.ie/"
+        openGraph={{
+          url: "https://alhedaya.netlify.app/",
+          title: `${title} - আল হেদায়া`,
+          description: description.substring(0, 100),
+          images: [
+            {
+              url: imageURL,
+              alt: `${title} - আল হেদায়া`,
+            },
+          ],
+          siteName: "আল হেদায়া",
+        }}
+      />
+
       <Layout header={false} simpleHeader={true}>
         <SearchComponent />
         <div className="mt-8 pb-8 px-4">
@@ -83,10 +103,10 @@ const BookPage = ({
               <span className="flex gap-2">
                 <p>বিষয় :</p>
                 <Link
-                  href={`/categories/${categories[0].node.id}`}
+                  href={`/categories/${categories[0]?.id}`}
                   className="text-yellow-700"
                 >
-                  {categories[0].node.name}
+                  {categories[0]?.name}
                 </Link>
               </span>
             </div>
@@ -146,106 +166,39 @@ const BookPage = ({
 export default BookPage;
 
 export const getStaticPaths = async () => {
-  const client = new ApolloClient({
-    uri: "http://sa.local/graphql",
-    cache: new InMemoryCache(),
-  });
-
-  const { data } = await client.query({
-    query: gql`
-      query Books {
-        posts {
-          nodes {
-            id
-          }
-        }
-      }
-    `,
-  });
-  // books.data.posts.edges
   return {
-    paths: data.posts.nodes.map((node) => ({
-      params: { slug: node.id },
+    paths: booksData.map((data) => ({
+      params: { slug: data.id },
     })),
     fallback: false,
   };
 };
 
 export const getStaticProps = async ({ params }) => {
-  const bookId = params.slug;
-  const client = new ApolloClient({
-    uri: `http://sa.local/graphql`,
-    cache: new InMemoryCache(),
-  });
+  const { slug } = params;
+  const bookData = booksData.filter((item) => item.id == slug);
+  const data = bookData[0];
+  const recentBooksData = booksData.slice(0, 8);
 
-  const { data } = await client.query({
-    query: gql`
-      query BookDetails($bookId: ID!) {
-        post(id: $bookId) {
-          id
-          title
-          categories {
-            edges {
-              node {
-                id
-                name
-              }
-            }
-          }
-          acf {
-            imgurl
-            discountPrice
-            price
-            description
-            publication
-            author {
-              ... on Page {
-                id
-                title
-              }
-            }
-          }
-        }
-      }
-    `,
-    variables: { bookId },
-  });
-
-  const recentBooksData = await client.query({
-    query: gql`
-      query Books {
-        posts(first: 10) {
-          nodes {
-            id
-            title
-            acf {
-              imgurl
-              discountPrice
-              price
-              author {
-                ... on Page {
-                  id
-                  title
-                }
-              }
-            }
-          }
-        }
-      }
-    `,
-  });
+  const title = data?.title;
+  const price = data?.acf?.price;
+  const discountPrice = data?.acf?.discountPrice;
+  const publication = data?.acf?.publication;
+  const authors = data?.acf?.author;
+  const imageURL = data?.acf?.imgurl;
+  const description = data?.acf?.description;
+  const categories = data?.categories.nodes;
   return {
     props: {
-      data: data,
-      title: data.post.title,
-      price: data.post.acf.price,
-      discountPrice: data.post.acf.discountPrice,
-      publication: data.post.acf.publication,
-      authors: data.post.acf.author,
-      imageURL: data.post.acf.imgurl,
-      description: data.post.acf.description,
-      categories: data.post.categories.edges,
-      recentBooksData: recentBooksData.data.posts.nodes,
+      title,
+      price,
+      discountPrice,
+      publication,
+      authors,
+      imageURL,
+      description,
+      categories,
+      recentBooksData,
     },
   };
 };

@@ -2,16 +2,16 @@
 import { Layout, SearchComponent } from "../../components";
 // next
 import Link from "next/link";
-// apollo
-import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
+// data
+import { data as categoryData } from "../../data/categoryData";
 
-const Categories = ({ categories }) => {
+const Categories = () => {
   return (
     <>
       <Layout>
         <SearchComponent />
         <div className="py-6 grid grid-cols-1 gap-3 px-2">
-          {categories.map((category) => (
+          {categoryData.map((category) => (
             <div
               key={category.node.id}
               className="text-xl border-l-4 border-baseGreen py-2 pl-2"
@@ -29,30 +29,30 @@ const Categories = ({ categories }) => {
 
 export default Categories;
 
-export async function getStaticProps() {
-  const client = new ApolloClient({
-    uri: process.env.WORDPRESS_ENDPOINT,
-    cache: new InMemoryCache(),
-  });
+// export async function getStaticProps() {
+//   const client = new ApolloClient({
+//     uri: process.env.WORDPRESS_ENDPOINT,
+//     cache: new InMemoryCache(),
+//   });
 
-  const { data } = await client.query({
-    query: gql`
-      query Categories {
-        categories(first: 100) {
-          edges {
-            node {
-              name
-              id
-            }
-          }
-        }
-      }
-    `,
-  });
+//   const { data } = await client.query({
+//     query: gql`
+//       query Categories {
+//         categories(first: 100) {
+//           edges {
+//             node {
+//               name
+//               id
+//             }
+//           }
+//         }
+//       }
+//     `,
+//   });
 
-  return {
-    props: {
-      categories: data.categories.edges,
-    },
-  };
-}
+//   return {
+//     props: {
+//       categories: data.categories.edges,
+//     },
+//   };
+// }

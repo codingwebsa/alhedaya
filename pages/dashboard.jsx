@@ -1,7 +1,7 @@
 // nextjs
 import Head from "next/head";
 // components
-import { MUINavbar, MUITable } from "../components";
+import { Layout, MUINavbar, MUITable } from "../components";
 
 const Dashboard = () => {
   return (
@@ -9,8 +9,10 @@ const Dashboard = () => {
       <Head>
         <title>Dashboard</title>
       </Head>
-      <MUINavbar />
-      <MUITable />
+      <Layout>
+        <MUINavbar />
+        <MUITable />
+      </Layout>
     </>
   );
 };

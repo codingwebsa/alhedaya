@@ -6,10 +6,12 @@ import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
 import { Booksec, Layout, SearchComponent } from "../../../components";
 // fuse
 import Fuse from "fuse.js";
+// data
+import { data as booksData } from "../../../data/booksData";
+import { data as authorsData } from "../../../data/authorsData";
 
 const AuthorSingle = ({ data, authorName }) => {
-  console.log(data);
-  console.log(authorName);
+  booksData.filter((book) => {});
   return (
     <>
       <Head>
@@ -26,28 +28,10 @@ const AuthorSingle = ({ data, authorName }) => {
 export default AuthorSingle;
 
 export const getStaticPaths = async () => {
-  const client = new ApolloClient({
-    uri: "http://sa.local/graphql",
-    cache: new InMemoryCache(),
-  });
-
-  const { data } = await client.query({
-    query: gql`
-      query SingleAuthorPaths {
-        pages {
-          edges {
-            node {
-              id
-            }
-          }
-        }
-      }
-    `,
-  });
   // books.data.posts.edges
   return {
-    paths: data.pages.edges.map((edge) => ({
-      params: { slug: edge.node.id },
+    paths: authorsData.map((author) => ({
+      params: { slug: author.node.id },
     })),
     fallback: false,
   };
@@ -59,51 +43,52 @@ export async function getStaticProps({ params }) {
   const modifiedData = [];
   let authorName = "";
 
-  const client = new ApolloClient({
-    uri: process.env.WORDPRESS_ENDPOINT,
-    cache: new InMemoryCache(),
-  });
-  // apollo data
-  const { data } = await client.query({
-    query: gql`
-      query AllAuthorDetails {
-        posts(first: 10000) {
-          nodes {
-            title
-            excerpt
-            categories {
-              edges {
-                node {
-                  id
-                  name
-                }
-              }
-            }
-            featuredImage {
-              node {
-                sourceUrl
-              }
-            }
-            acf {
-              imgurl
-              discountPrice
-              price
-              description
-              publication
-              author {
-                ... on Page {
-                  id
-                  title
-                }
-              }
-            }
-          }
-        }
-      }
-    `,
-  });
+  // const client = new ApolloClient({
+  //   uri: process.env.WORDPRESS_ENDPOINT,
+  //   cache: new InMemoryCache(),
+  // });
+  // // apollo data
+  // const { data } = await client.query({
+  //   query: gql`
+  //     query AllAuthorDetails {
+  //       posts(first: 10000) {
+  //         nodes {
+  //           title
+  //           excerpt
+  //           categories {
+  //             edges {
+  //               node {
+  //                 id
+  //                 name
+  //               }
+  //             }
+  //           }
+  //           featuredImage {
+  //             node {
+  //               sourceUrl
+  //             }
+  //           }
+  //           acf {
+  //             imgurl
+  //             discountPrice
+  //             price
+  //             description
+  //             publication
+  //             author {
+  //               ... on Page {
+  //                 id
+  //                 title
+  //               }
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   `,
+  // });
+
   // init fuse
-  const fuse = new Fuse(data.posts.nodes, {
+  const fuse = new Fuse(booksData, {
     keys: ["acf.author.id"],
   });
   // get fuse Data
@@ -112,7 +97,7 @@ export async function getStaticProps({ params }) {
   fuseData.forEach((fuseD) => {
     fuseD.item.acf.author.forEach((a) => {
       if (a.id == slug) {
-        modifiedData.push(data.posts.nodes[fuseD.refIndex]);
+        modifiedData.push(booksData[fuseD.refIndex]);
         authorName = a.title || a.name;
       }
     });

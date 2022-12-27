@@ -18,9 +18,12 @@ export const GlobalContextProvider = ({ children }) => {
   // cartitems useEffect
   useEffect(() => {
     // total
-    console.log(cartItems);
+    // console.log(cartItems);
     cartItems.forEach((item) => {
-      priceArray.push(item.data.acf.discountPrice || item.data.data.acf.price);
+      let _discountPrice = item.data.acf.discountPrice;
+      let _price = item.data.acf.price;
+
+      priceArray.push(_discountPrice || _price);
     });
     setSubTotal(priceArray.reduce((a, b) => a + b, 0));
   }, [cartItems]);
