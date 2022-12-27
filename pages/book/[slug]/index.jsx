@@ -35,7 +35,7 @@ const BookPage = ({
   // symble
   const Symble = () => <span>৳</span>;
 
-  console.log(data);
+  // console.log(data);
   function handleOrder(data) {
     setCartItems([...cartItems, data]);
 
