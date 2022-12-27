@@ -5,7 +5,6 @@ export { default as Footer } from "./Footer";
 export { default as Header } from "./Header";
 export { default as HomeCategory } from "./HomeCategory";
 export { default as Layout } from "./Layout";
-export { default as MUINavbar } from "./MUINavbar";
 export { default as MUITable } from "./MUITable";
 export { default as NewSearchCom } from "./NewSearchCom";
 export { default as OrderForm } from "./OrderForm";
