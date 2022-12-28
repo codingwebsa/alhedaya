@@ -4,7 +4,12 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import Link from "next/link";
 // components
-import { SearchComponent, Booksec, Layout } from "../../../components";
+import {
+  SearchComponent,
+  Booksec,
+  Layout,
+  QuickCart,
+} from "../../../components";
 // apolloClient
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 // react
@@ -31,6 +36,7 @@ const BookPage = ({
   recentBooksData,
 }) => {
   const [readMore, setReadMore] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const { cartItems, setCartItems } = useContext(GlobalContext);
   // symble
   const Symble = () => <span>৳</span>;
@@ -48,6 +54,8 @@ const BookPage = ({
         color: "#fff",
       },
     });
+
+    setIsOpen(true);
   }
 
   return (
@@ -77,8 +85,6 @@ const BookPage = ({
           <div className="flex justify-center">
             <Image
               src={imageURL}
-              blurDataURL={imageURL}
-              placeholder="blur"
               width={300}
               height={130}
               className="rounded-lg shadow-md"
@@ -162,6 +168,11 @@ const BookPage = ({
         </div>
         <Booksec data={recentBooksData} title="আরো দেখুন…" />
       </Layout>
+      <QuickCart
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        setIsOpen={setIsOpen}
+      />
     </>
   );
 };

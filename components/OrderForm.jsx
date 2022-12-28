@@ -10,18 +10,20 @@ import { addDoc } from "firebase/firestore";
 import { orderCollertionRef } from "../firebase.config";
 // email js
 import emailjs from "@emailjs/browser";
+import { useRouter } from "next/router";
 
 const OrderForm = () => {
   const [loading, setLoading] = useState(false);
   const { user, cartItems } = useContext(GlobalContext);
   const formRef = useRef();
+  const router = useRouter();
 
-  const cityptions = ["Dhaka", "Rajshahi"];
+  const cityoptions = ["Dhaka", "Rajshahi"];
   const areaOptions = ["Godagari", "Carghat"];
 
   function handleSunmit(e) {
     e.preventDefault();
-    setLoading(true);
+    let orderID = "";
     // console.log(cartItems);
 
     const name = e.target.name.value;
@@ -34,11 +36,7 @@ const OrderForm = () => {
     const zone = e.target.zone.value;
 
     async function addDataToFirestore() {
-      setLoading(true);
-
       try {
-        setLoading(true);
-
         const docRef = await addDoc(orderCollertionRef, {
           name,
           phoneNum,
@@ -50,31 +48,40 @@ const OrderForm = () => {
           zone,
           cartItems,
         });
-
-        // console.log(docRef);
+        orderID = docRef.id;
       } catch (error) {}
     }
-    addDataToFirestore();
+    function SendMail() {
+      emailjs
+        .sendForm(
+          "service_vger1bp",
+          "template_9b92ise",
+          formRef.current,
+          "EPDakJSwpBnKoxtqA"
+        )
+        .then(
+          (result) => {
+            console.log(result.text);
+          },
+          (error) => {
+            console.log(error.text);
+          }
+        );
+    }
+
+    // calling functions
     setLoading(true);
+    addDataToFirestore();
+    SendMail();
+    formRef.current.reset();
+    setTimeout(() => {
+      setLoading(false);
+      if (orderID) {
+        router.push(`/order/${orderID}`);
+      }
+    }, 1000);
 
-    emailjs
-      .sendForm(
-        "service_vger1bp",
-        "template_9b92ise",
-        formRef.current,
-        "EPDakJSwpBnKoxtqA"
-      )
-      .then(
-        (result) => {
-          console.log(result.text);
-          formRef.current.reset();
-        },
-        (error) => {
-          console.log(error.text);
-        }
-      );
-
-    setLoading(false);
+    console.log("done");
   }
 
   if (loading)
@@ -91,7 +98,7 @@ const OrderForm = () => {
 
   return (
     <>
-      <form onSubmit={handleSunmit} ref={formRef}>
+      <form onSubmit={handleSunmit} ref={formRef} autocomplete="off">
         <h2 className="py-4 text-2xl font-bold">Your Details</h2>
         <div>
           <div className="py-3">
@@ -154,10 +161,16 @@ const OrderForm = () => {
             <Autocomplete
               disablePortal
               id="city"
-              options={cityptions}
+              options={cityoptions}
               className="w-full"
               renderInput={(params) => (
-                <TextField name="city" required {...params} label="City" />
+                <TextField
+                  name="city"
+                  required
+                  {...params}
+                  label="City"
+                  autoComplete="off"
+                />
               )}
             />
           </div>
