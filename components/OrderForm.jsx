@@ -15,6 +15,7 @@ import { useRouter } from "next/router";
 const OrderForm = () => {
   const [loading, setLoading] = useState(false);
   const { user, cartItems } = useContext(GlobalContext);
+  const [orderID, setOrderID] = useState();
   const formRef = useRef();
   const router = useRouter();
 
@@ -23,7 +24,6 @@ const OrderForm = () => {
 
   function handleSunmit(e) {
     e.preventDefault();
-    let orderID = "";
     // console.log(cartItems);
 
     const name = e.target.name.value;
@@ -48,7 +48,7 @@ const OrderForm = () => {
           zone,
           cartItems,
         });
-        orderID = docRef.id;
+        setOrderID(docRef.id);
       } catch (error) {}
     }
     function SendMail() {
@@ -76,9 +76,7 @@ const OrderForm = () => {
     formRef.current.reset();
     setTimeout(() => {
       setLoading(false);
-      if (orderID) {
-        router.push(`/order/${orderID}`);
-      }
+      router.push(`/order/${orderID}`);
     }, 1000);
 
     console.log("done");
