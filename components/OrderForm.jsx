@@ -2,6 +2,10 @@ import {
   Autocomplete,
   Backdrop,
   CircularProgress,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
   TextField,
 } from "@mui/material";
 import { useContext, useRef, useState } from "react";
@@ -156,43 +160,34 @@ const OrderForm = () => {
             />
           </div>
           <div className="py-3 inline-block w-1/2 pl-1">
-            <Autocomplete
-              disablePortal
-              id="city"
-              options={cityoptions}
-              className="w-full"
-              renderInput={(params) => (
-                <TextField
-                  name="city"
-                  required
-                  {...params}
-                  label="City"
-                  autoComplete="off"
-                />
-              )}
-            />
+            <FormControl fullWidth required>
+              <InputLabel id="cityLabel">City</InputLabel>
+              <Select labelId="cityLabel" id="city" label="City" name="city">
+                {cityoptions?.map((city) => (
+                  <MenuItem value={city.toString()}>{city}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </div>
           <div className="py-3 inline-block w-1/2 pr-1">
-            <Autocomplete
-              disablePortal
-              id="area"
-              options={areaOptions}
-              sx={{ width: "100%" }}
-              renderInput={(params) => (
-                <TextField name="area" required {...params} label="Area" />
-              )}
-            />
+            <FormControl fullWidth required>
+              <InputLabel id="areaLabel">Area</InputLabel>
+              <Select labelId="areaLabel" id="area" label="Area" name="area">
+                {areaOptions?.map((area) => (
+                  <MenuItem value={area.toString()}>{area}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </div>
           <div className="py-3 inline-block w-1/2 pl-1">
-            <Autocomplete
-              disablePortal
-              id="zone"
-              options={areaOptions}
-              sx={{ width: "100%" }}
-              renderInput={(params) => (
-                <TextField name="zone" required {...params} label="Zone" />
-              )}
-            />
+            <FormControl fullWidth required>
+              <InputLabel id="zoneLabel">Zone</InputLabel>
+              <Select labelId="zoneLabel" id="zone" label="Zone" name="zone">
+                {areaOptions?.map((zone) => (
+                  <MenuItem value={zone.toString()}>{zone}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </div>
           <div className="py-3 inline-block w-full">
             <TextField

@@ -15,10 +15,13 @@ export const GlobalContextProvider = ({ children }) => {
   const ShipingFee = 30;
   var priceArray = [];
 
+  async function getLocation() {
+    const res = await fetch("https://ipinfo.io/json?token=6e1dac98093207");
+    const jsonData = await res.json();
+  }
+
   // cartitems useEffect
   useEffect(() => {
-    // total
-    // console.log(cartItems);
     cartItems?.forEach((item) => {
       let _discountPrice = item.acf.discountPrice;
       let _price = item.acf.price;
@@ -43,7 +46,15 @@ export const GlobalContextProvider = ({ children }) => {
 
   return (
     <GlobalContext.Provider
-      value={{ cartItems, setCartItems, user, total, subTotal, ShipingFee }}
+      value={{
+        cartItems,
+        setCartItems,
+        user,
+        total,
+        subTotal,
+        ShipingFee,
+        getLocation,
+      }}
     >
       {children}
     </GlobalContext.Provider>

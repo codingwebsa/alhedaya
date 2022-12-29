@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "build-export": "next build && next export"
+    "build-export": "next build && next export",
+    "sitemap": "next-sitemap"
   },
   "dependencies": {
     "@apollo/client": "^3.7.1",
@@ -26,6 +27,7 @@
     "graphql": "^16.6.0",
     "next": "13.0.6",
     "next-seo": "^5.15.0",
+    "next-sitemap": "^3.1.43",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.0",

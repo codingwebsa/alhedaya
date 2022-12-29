@@ -49,7 +49,7 @@ const QuickCart = ({ isOpen, onClose, setIsOpen }) => {
                             </s>
                           </>
                         ) : (
-                          <span className="text-3xl font-semibold text-baseGreen">
+                          <span className="text-lg font-semibold text-baseGreen">
                             <Symble /> {_price}
                           </span>
                         )}
