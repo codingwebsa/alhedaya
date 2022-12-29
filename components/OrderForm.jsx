@@ -1,5 +1,4 @@
 import {
-  Autocomplete,
   Backdrop,
   CircularProgress,
   FormControl,
@@ -10,7 +9,8 @@ import {
 } from "@mui/material";
 import { useContext, useRef, useState } from "react";
 import { GlobalContext } from "../context/globalContext";
-import { addDoc } from "firebase/firestore";
+// firestore
+import { addDoc, Timestamp } from "firebase/firestore";
 import { orderCollertionRef } from "../firebase.config";
 // email js
 import emailjs from "@emailjs/browser";
@@ -18,7 +18,8 @@ import { useRouter } from "next/router";
 
 const OrderForm = () => {
   const [loading, setLoading] = useState(false);
-  const { user, cartItems } = useContext(GlobalContext);
+  const { user, cartItems, subTotal, total, ShipingFee } =
+    useContext(GlobalContext);
   const [orderID, setOrderID] = useState();
   const formRef = useRef();
   const router = useRouter();
@@ -51,6 +52,7 @@ const OrderForm = () => {
           area,
           zone,
           cartItems,
+          timestamp: Timestamp(),
         });
         setOrderID(docRef.id);
       } catch (error) {}
@@ -80,12 +82,12 @@ const OrderForm = () => {
     formRef.current.reset();
     setTimeout(() => {
       setLoading(false);
-      router.push(`/order/${orderID}`);
-    }, 1000);
+    }, 500);
 
     console.log("done");
   }
 
+  if (orderID) router.push(`/order/${orderID}`);
   if (loading)
     return (
       <div>
@@ -163,8 +165,10 @@ const OrderForm = () => {
             <FormControl fullWidth required>
               <InputLabel id="cityLabel">City</InputLabel>
               <Select labelId="cityLabel" id="city" label="City" name="city">
-                {cityoptions?.map((city) => (
-                  <MenuItem value={city.toString()}>{city}</MenuItem>
+                {cityoptions?.map((city, _i) => (
+                  <MenuItem value={city.toString()} key={_i}>
+                    {city}
+                  </MenuItem>
                 ))}
               </Select>
             </FormControl>
@@ -173,8 +177,10 @@ const OrderForm = () => {
             <FormControl fullWidth required>
               <InputLabel id="areaLabel">Area</InputLabel>
               <Select labelId="areaLabel" id="area" label="Area" name="area">
-                {areaOptions?.map((area) => (
-                  <MenuItem value={area.toString()}>{area}</MenuItem>
+                {areaOptions?.map((area, _i) => (
+                  <MenuItem value={area.toString()} key={_i}>
+                    {area}
+                  </MenuItem>
                 ))}
               </Select>
             </FormControl>
@@ -183,8 +189,10 @@ const OrderForm = () => {
             <FormControl fullWidth required>
               <InputLabel id="zoneLabel">Zone</InputLabel>
               <Select labelId="zoneLabel" id="zone" label="Zone" name="zone">
-                {areaOptions?.map((zone) => (
-                  <MenuItem value={zone.toString()}>{zone}</MenuItem>
+                {areaOptions?.map((zone, _i) => (
+                  <MenuItem value={zone.toString()} key={_i}>
+                    {zone}
+                  </MenuItem>
                 ))}
               </Select>
             </FormControl>
