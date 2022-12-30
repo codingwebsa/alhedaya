@@ -7,10 +7,10 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { GlobalContext } from "../context/globalContext";
 // firestore
-import { addDoc, Timestamp } from "firebase/firestore";
+import { addDoc, doc, Timestamp } from "firebase/firestore";
 import { orderCollertionRef } from "../firebase.config";
 // email js
 import emailjs from "@emailjs/browser";
@@ -33,7 +33,7 @@ const OrderForm = () => {
 
     const name = e.target.name.value;
     const phoneNum = e.target.phoneNum.value;
-    const alternativePhoneNum = e.target.alternativePhoneNum.value;
+    const alternativePhoneNum = e.target.alternativePhoneNum.value || "";
     const email = e.target.email.value;
     const country = e.target.country.value;
     const city = e.target.city.value;
@@ -41,21 +41,23 @@ const OrderForm = () => {
     const zone = e.target.zone.value;
 
     async function addDataToFirestore() {
-      try {
-        const docRef = await addDoc(orderCollertionRef, {
-          name,
-          phoneNum,
-          alternativePhoneNum,
-          email,
-          country,
-          city,
-          area,
-          zone,
-          cartItems,
-          timestamp: Timestamp(),
-        });
+      addDoc(orderCollertionRef, {
+        name,
+        phoneNum,
+        alternativePhoneNum,
+        email,
+        country,
+        city,
+        area,
+        zone,
+        cartItems,
+        ShipingFee,
+        subTotal,
+        total,
+      }).then((docRef) => {
+        console.log(docRef);
         setOrderID(docRef.id);
-      } catch (error) {}
+      });
     }
     function SendMail() {
       emailjs
@@ -88,6 +90,7 @@ const OrderForm = () => {
   }
 
   if (orderID) router.push(`/order/${orderID}`);
+
   if (loading)
     return (
       <div>

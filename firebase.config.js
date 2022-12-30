@@ -18,12 +18,12 @@ const firebaseConfig = {
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGEBUCKET,
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGINGSENDERID,
   appId: process.env.NEXT_PUBLIC_FIREBASE_APPID,
+  measurementId: process.env.NEXT_PUBLIC_MESURMENT_ID,
 };
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 // initialize firestore
 const firebaseDB = getFirestore(app);
-
 const orderCollertionRef = collection(firebaseDB, "orders");
 // Initialize Firebase Authentication and get a reference to the service
 const auth = getAuth(app);
