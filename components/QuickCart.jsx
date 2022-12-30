@@ -28,13 +28,13 @@ const QuickCart = ({ isOpen, onClose, setIsOpen }) => {
                 const _discountPrice = cartItem.acf.discountPrice;
                 const _price = cartItem.acf.price;
                 return (
-                  <div className="flex gap-4" key={_i}>
+                  <div className="flex gap-4 pb-2" key={_i}>
                     <Image
                       src={_imgURL}
                       alt={_title}
                       width={80}
                       height={100}
-                      className="rounded-lg"
+                      className="rounded-lg h-20 object-cover"
                     />
                     <div className="pt-2">
                       <p className="font-semibold">{_title}</p>

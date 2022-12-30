@@ -85,9 +85,9 @@ const BookPage = ({
           <div className="flex justify-center">
             <Image
               src={imageURL}
-              width={300}
-              height={130}
-              className="rounded-lg shadow-md"
+              width={500}
+              height={300}
+              className="rounded-lg shadow-md w-[95%] h-80  object-cover"
               alt={title}
             />
           </div>

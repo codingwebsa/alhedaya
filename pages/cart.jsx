@@ -55,7 +55,7 @@ const Cart = () => {
                         let price = item?.acf.price;
                         return (
                           <li
-                            class="flex  gap-x-3 py-6 text-left sm:flex-row sm:space-x-5 sm:space-y-0"
+                            class="flex  gap-x-3 py-2 text-left sm:flex-row sm:space-x-5 sm:space-y-0"
                             key={_i}
                           >
                             <div class="shrink-0">

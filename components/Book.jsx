@@ -16,7 +16,7 @@ const Book = ({ data }) => {
             width={256}
             height={81}
             alt={data.title}
-            className="rounded-md mb-2 hover:brightness-90"
+            className="rounded-md mb-2 hover:brightness-90 h-48 object-cover"
           />
           {/* title */}
           <h2 className="font-hindSiliguri text-md font-semibold">
