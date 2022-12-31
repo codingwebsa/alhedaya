@@ -59,7 +59,6 @@ const OrderForm = () => {
         status: "pending",
         paymentMethod: "Pay on Delivery",
       }).then((docRef) => {
-        console.log(docRef);
         setOrderID(docRef.id);
       });
     }
