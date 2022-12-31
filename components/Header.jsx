@@ -22,28 +22,37 @@ const Navbar = () => {
         <div className="max-w-xl mx-auto">
           <nav className="grid grid-cols-5 h-[9vh] place-items-center text-dark bg-white border-t-2 border-baseGreen rounded-t-2xl">
             <Tooltip title="Home" arrow placement="top">
-              <Link href="/" className="active:scale-[.9]">
+              <Link href="/" className="active:scale-[.9] text-dark fill-dark">
                 <BiHome size={28} />
               </Link>
             </Tooltip>
             <Tooltip title="Search" arrow placement="top">
-              <Link href="/search" className="active:scale-[.9]">
+              <Link
+                href="/search"
+                className="active:scale-[.9] text-dark fill-dark"
+              >
                 <CgSearch size={28} />
               </Link>
             </Tooltip>
             <Tooltip title="Menu" arrow placement="top">
-              <Link href="/" className="active:scale-[.9]">
+              <Link href="/" className="active:scale-[.9] text-dark fill-dark">
                 <CgMenuGridO size={28} />
               </Link>
             </Tooltip>
             <Tooltip title="Cart" arrow placement="top">
-              <Link href="/cart" className="active:scale-[.9]">
+              <Link
+                href="/cart"
+                className="active:scale-[.9] text-dark fill-dark"
+              >
                 <AiOutlineShoppingCart size={28} />
               </Link>
             </Tooltip>
 
             <Tooltip title="Account" arrow placement="top">
-              <Link href="/account" className="active:scale-[.9]">
+              <Link
+                href="/account"
+                className="active:scale-[.9] text-dark fill-dark"
+              >
                 <Image
                   src={user?.photoURL || `/user.svg`}
                   width={32}
