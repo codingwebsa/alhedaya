@@ -1,14 +1,16 @@
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TbTruckDelivery } from "react-icons/tb";
 
 const RecentOrder = () => {
   const [recentOrderID, setRecentOrderID] = useState(null);
 
-  if (typeof window !== "undefined") {
-    let localOrderID = window.localStorage.getItem("recentOrderID");
-    if (!recentOrderID) setRecentOrderID(localOrderID);
-  }
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      let localOrderID = window.localStorage.getItem("recentOrderID");
+      if (!recentOrderID) setRecentOrderID(localOrderID);
+    }
+  }, []);
 
   if (!recentOrderID) return;
   return (
