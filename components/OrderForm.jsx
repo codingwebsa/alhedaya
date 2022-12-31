@@ -7,10 +7,10 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { GlobalContext } from "../context/globalContext";
 // firestore
-import { addDoc, doc, Timestamp } from "firebase/firestore";
+import { addDoc } from "firebase/firestore";
 import { orderCollertionRef } from "../firebase.config";
 // email js
 import emailjs from "@emailjs/browser";
@@ -39,6 +39,7 @@ const OrderForm = () => {
     const city = e.target.city.value;
     const area = e.target.area.value;
     const zone = e.target.zone.value;
+    const addressDetails = e.target.addressDetails.value;
 
     async function addDataToFirestore() {
       addDoc(orderCollertionRef, {
@@ -50,10 +51,13 @@ const OrderForm = () => {
         city,
         area,
         zone,
+        addressDetails,
         cartItems,
         ShipingFee,
         subTotal,
         total,
+        status: "pending",
+        paymentMethod: "Pay on Delivery",
       }).then((docRef) => {
         console.log(docRef);
         setOrderID(docRef.id);

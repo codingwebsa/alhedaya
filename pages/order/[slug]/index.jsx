@@ -4,9 +4,10 @@ import { useRouter } from "next/router";
 import { Layout } from "../../../components";
 // firestore
 import { doc, getDoc, getDocs } from "firebase/firestore";
-// context
-import { GlobalContext } from "../../../context/globalContext";
-import { useContext } from "react";
+// firebase configuration
+import { firebaseDB } from "../../../firebase.config";
+import { useEffect, useState } from "react";
+import { Backdrop, CircularProgress, LinearProgress } from "@mui/material";
 
 const data = {
   shippingfee: 30,
@@ -42,12 +43,34 @@ const data = {
 
 const OrderDetails = () => {
   const router = useRouter();
-  // const { firebaseDB, orderCollertionRef } = useContext(GlobalContext);
+  const [orderDetails, setOrderDetails] = useState(null);
   const { slug: orderID } = router.query;
 
-  // getDocs(orderCollertionRef).then((d) => console.log(d));
+  async function getOrderDetails() {
+    const docRef = doc(firebaseDB, "orders", orderID);
+    getDoc(docRef).then((doc) => {
+      setOrderDetails({ data: doc.data(), id: doc.id });
+    });
+  }
 
-  // getDoc(docRef).then((docData) => console.log(docData));
+  useEffect(() => {
+    if (orderID) getOrderDetails();
+  }, [orderID]);
+
+  if (!orderDetails)
+    return (
+      <>
+        <div>
+          <Backdrop
+            sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={true}
+          >
+            <CircularProgress color="inherit" />
+          </Backdrop>
+        </div>
+      </>
+    );
+
   return (
     <>
       <Layout>
@@ -60,11 +83,11 @@ const OrderDetails = () => {
             </h1>
             {/* ordered books */}
             <div className="flex flex-col gap-2 mt-4">
-              {data.books.map((book, _i) => (
+              {orderDetails?.data.cartItems.map((book, _i) => (
                 <div className="flex gap-3" key={_i}>
                   <div>
                     <Image
-                      src={book.imgurl}
+                      src={book.acf.imgurl}
                       alt={book.title}
                       width={120}
                       height={80}
@@ -73,9 +96,9 @@ const OrderDetails = () => {
                   </div>
                   <div>
                     <p className="text-lg font-semibold">{book.title}</p>
-                    <p className="text-base">{book.authorName}</p>
+                    <p className="text-base">{book.acf.author[0].title}</p>
                     <p className="text-lg text-baseGreen font-bold">
-                      ৳ {book.price}
+                      ৳ {book.acf.discountPrice || book.acf.price}
                     </p>
                   </div>
                 </div>
@@ -91,23 +114,23 @@ const OrderDetails = () => {
                 <div className="mt-4">
                   <div>
                     <span className="font-medium text-xl">Name:</span>{" "}
-                    {data.user_name}
+                    {orderDetails?.data.name}
                   </div>
                   <div>
                     <span className="font-medium text-xl">Email:</span>{" "}
-                    {data.user_email}
+                    {orderDetails?.data.email}
                   </div>
                   <div>
                     <span className="font-medium text-xl">Phone:</span>{" "}
-                    {data.user_phone}
+                    {orderDetails?.data.phoneNum}
                   </div>
                 </div>
                 {/* address */}
                 <div className="mt-2">
-                  {data.country} <br />
-                  {data.zone}, {data.area} <br />
+                  {orderDetails?.data.country} <br />
+                  {orderDetails?.data.zone}, {orderDetails?.data.area} <br />
                   {data.city} <br />
-                  {data.address_details}
+                  {orderDetails?.data.addressDetails}
                 </div>
                 {/* payment details */}
                 <div className="mt-4">
@@ -115,21 +138,27 @@ const OrderDetails = () => {
                   <div className="mt-2">
                     <p>
                       <span>Method: </span>
-                      <span className="font-semibold">{"Pay on Delivery"}</span>
+                      <span className="font-semibold">
+                        {orderDetails?.data.paymentMethod}
+                      </span>
                     </p>
                     <p>
                       <span>Subtotal: </span>
-                      <span className="font-semibold">৳ {data.subtotal}</span>
+                      <span className="font-semibold">
+                        ৳ {orderDetails?.data.subTotal}
+                      </span>
                     </p>
                     <p>
                       <span>Shipping Fee: </span>
                       <span className="font-semibold">
-                        ৳ {data.shippingfee}
+                        ৳ {orderDetails?.data.ShipingFee}
                       </span>
                     </p>
                     <p>
                       <span>Total: </span>
-                      <span className="font-semibold">৳ {data.total}</span>
+                      <span className="font-semibold">
+                        ৳ {orderDetails?.data.total}
+                      </span>
                     </p>
                   </div>
                 </div>
