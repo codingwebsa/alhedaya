@@ -9,6 +9,7 @@ export { default as MUITable } from "./MUITable";
 export { default as NewSearchCom } from "./NewSearchCom";
 export { default as OrderForm } from "./OrderForm";
 export { default as QuickCart } from "./QuickCart";
+export { default as RecentOrder } from "./RecentOrder";
 export { default as SearchComponent } from "./SearchComponent";
 export { default as Sidebar } from "./Sidebar";
 export { default as SigninPageComponent } from "./SigninPageComponent";

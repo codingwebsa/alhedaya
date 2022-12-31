@@ -60,6 +60,9 @@ const OrderForm = () => {
         paymentMethod: "Pay on Delivery",
       }).then((docRef) => {
         setOrderID(docRef.id);
+        if (typeof window !== "undefined") {
+          localStorage.setItem("recentOrderID", docRef.id);
+        }
       });
     }
     function SendMail() {

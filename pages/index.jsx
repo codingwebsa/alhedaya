@@ -5,7 +5,13 @@ import Head from "next/head";
 // react multi carousel
 import Carousel from "../components/Carousel";
 // components
-import { HomeCategory, SearchComponent, Booksec, Layout } from "../components";
+import {
+  HomeCategory,
+  SearchComponent,
+  Booksec,
+  Layout,
+  RecentOrder,
+} from "../components";
 // data
 import { data as booksData } from "../data/booksData";
 import { data as categoryData } from "../data/categoryData";
@@ -21,6 +27,7 @@ export default function Home() {
       <Layout>
         <SearchComponent />
         <Carousel />
+        <RecentOrder />
         <HomeCategory data={recentCategoryData} />
         <Booksec title="Recent Books" data={recentBooksData} />
       </Layout>

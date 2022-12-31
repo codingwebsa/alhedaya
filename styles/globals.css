@@ -2,11 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-
 ::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 svg {
-    user-select: none;
+  user-select: none;
+  fill: #00c9a733;
 }
