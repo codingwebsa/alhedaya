@@ -9,7 +9,7 @@ const Writedata = (data = "") => {
 export default Writedata;
 
 // export async function getStaticProps() {
-//   // books data
+//   //   // books data
 //   const GET_BOOKS_QUERY = gql`
 //     query BookDetails {
 //       posts(first: 10000) {
@@ -33,6 +33,11 @@ export default Writedata;
 //                 id
 //                 title
 //               }
+//             }
+//           }
+//           tags {
+//             nodes {
+//               name
 //             }
 //           }
 //         }
@@ -77,7 +82,7 @@ export default Writedata;
 
 //   // ------------------------**------------------------------------
 //   //   file writtings
-//   writeData("data/booksData.js", _booksData.data.posts.nodes);
+// writeData("data/booksData.js", _booksData.data.posts.nodes);
 //   writeData("data/categoryData.js", _categoryData.data.categories.edges);
 //   writeData("data/authorsData.js", _authorsData.data.pages.edges);
 

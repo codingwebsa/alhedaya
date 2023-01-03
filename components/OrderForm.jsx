@@ -24,7 +24,73 @@ const OrderForm = () => {
   const formRef = useRef();
   const router = useRouter();
 
-  const cityoptions = ["Dhaka", "Rajshahi"];
+  // options
+  const cityoptions = [
+    "ঢাকা",
+    "রাজশাহী",
+    "চট্টগ্রাম",
+    "খুলনা",
+    "বরিশাল",
+    "সিলেট",
+    "রংপুর",
+    "কক্সবাজার",
+    "কিশোরগঞ্জ",
+    "কুড়িঁগ্রাম",
+    "কুমিল্লা",
+    "কুষ্টিয়া",
+    "খাগড়াছড়ি",
+    "গাইবান্ধা",
+    "গাজীপুর",
+    "গোপালগঞ্জ",
+    "চাঁদপুর",
+    "চাঁপাইনবাবগঞ্জ",
+    "চুয়াডাঙ্গা",
+    "জয়পুরহাট",
+    "জামালপুর",
+    "ঝালকাঠি",
+    "ঝিনাইদহ",
+    "টাঙ্গাইল",
+    "ঠাকুরগাঁও",
+    "দিনাজপুর",
+    "নওগাঁ",
+    "নড়াইল",
+    "নরসিংদী",
+    "নাটোর",
+    "নারায়ণগঞ্জ",
+    "নীলফামারী",
+    "নেত্রকোনা",
+    "নোয়াখালী",
+    "পঞ্চগড়",
+    "পটুয়াখালী",
+    "পাবনা",
+    "পিরোজপুর",
+    "ফরিদপুর",
+    "ফেনী",
+    "বগুড়া",
+    "বরগুনা",
+    "বাগেরহাট",
+    "বান্দরবান",
+    "ব্রাহ্মণবাড়িয়া",
+    "ভোলা",
+    "ময়মনসিংহ",
+    "মাগুরা",
+    "মাদারীপুর",
+    "মানিকগঞ্জ",
+    "মুন্সিগঞ্জ",
+    "মেহেরপুর",
+    "মৌলভী বাজার",
+    "যশোর",
+    "রাঙ্গামাটি",
+    "রাজবাড়ী",
+    "লক্ষ্মীপুর",
+    "লালমনিরহাট",
+    "শরিয়তপুর",
+    "শেরপুর",
+    "সাতক্ষীরা",
+    "সিরাজগঞ্জ",
+    "সুনামগঞ্জ",
+    "হবিগঞ্জ",
+  ];
   const areaOptions = ["Godagari", "Carghat"];
 
   function handleSunmit(e) {
@@ -38,7 +104,6 @@ const OrderForm = () => {
     const country = e.target.country.value;
     const city = e.target.city.value;
     const area = e.target.area.value;
-    const zone = e.target.zone.value;
     const addressDetails = e.target.addressDetails.value;
 
     async function addDataToFirestore() {
@@ -50,7 +115,6 @@ const OrderForm = () => {
         country,
         city,
         area,
-        zone,
         addressDetails,
         cartItems,
         ShipingFee,
@@ -59,10 +123,10 @@ const OrderForm = () => {
         status: "pending",
         paymentMethod: "Pay on Delivery",
       }).then((docRef) => {
-        setOrderID(docRef.id);
         if (typeof window !== "undefined") {
           localStorage.setItem("recentOrderID", docRef.id);
         }
+        setOrderID(docRef.id);
       });
     }
     function SendMail() {
@@ -182,25 +246,13 @@ const OrderForm = () => {
               </Select>
             </FormControl>
           </div>
-          <div className="py-3 inline-block w-1/2 pr-1">
+          <div className="py-3 inline-block w-full pr-1">
             <FormControl fullWidth required>
               <InputLabel id="areaLabel">Area</InputLabel>
               <Select labelId="areaLabel" id="area" label="Area" name="area">
                 {areaOptions?.map((area, _i) => (
                   <MenuItem value={area.toString()} key={_i}>
                     {area}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </div>
-          <div className="py-3 inline-block w-1/2 pl-1">
-            <FormControl fullWidth required>
-              <InputLabel id="zoneLabel">Zone</InputLabel>
-              <Select labelId="zoneLabel" id="zone" label="Zone" name="zone">
-                {areaOptions?.map((zone, _i) => (
-                  <MenuItem value={zone.toString()} key={_i}>
-                    {zone}
                   </MenuItem>
                 ))}
               </Select>

@@ -21,7 +21,9 @@ const RecentOrder = () => {
             <span>
               <TbTruckDelivery size={40} />
             </span>
-            <p className="text-xl font-semibold">Track your recent order!</p>
+            <p className="text-xl font-semibold underline decoration-wavy">
+              Track your recent order!
+            </p>
           </div>
         </div>
       </Link>

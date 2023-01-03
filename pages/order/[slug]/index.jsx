@@ -128,8 +128,7 @@ const OrderDetails = () => {
                 {/* address */}
                 <div className="mt-2">
                   {orderDetails?.data.country} <br />
-                  {orderDetails?.data.zone}, {orderDetails?.data.area} <br />
-                  {data.city} <br />
+                  {orderDetails?.data.area}, {data.city} <br />
                   {orderDetails?.data.addressDetails}
                 </div>
                 {/* payment details */}
