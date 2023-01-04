@@ -1,4 +1,5 @@
 import {
+  Alert,
   Backdrop,
   CircularProgress,
   FormControl,
@@ -7,7 +8,7 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { GlobalContext } from "../context/globalContext";
 // firestore
 import { addDoc } from "firebase/firestore";
@@ -18,6 +19,8 @@ import { useRouter } from "next/router";
 
 const OrderForm = () => {
   const [loading, setLoading] = useState(false);
+  const [city, setCity] = useState(null);
+  const [areas, setAreas] = useState(null);
   const { user, cartItems, subTotal, total, ShipingFee } =
     useContext(GlobalContext);
   const [orderID, setOrderID] = useState();
@@ -173,6 +176,161 @@ const OrderForm = () => {
       </div>
     );
 
+  useEffect(() => {
+    if (city === "ঢাকা")
+      setAreas([
+        "আগারগাঁও",
+        "আজিমপুর",
+        "আদাবর",
+        "আফতাবনগর",
+        "ইব্রাহিমপুর",
+        "ইসলামপুর",
+        "ইস্কাটন",
+        "উওরা- সেক্টর ১৮",
+        "উত্তর খান",
+        "উত্তরা",
+        "উত্তরা-আব্দুল্লাহপর",
+        "উত্তরা-কাওলা",
+        "উত্তরা-কামারপাড়া",
+        "উত্তরা-দিয়াবাড়ি",
+        "উত্তরা-বাউনিয়া",
+        "এ্যালিফেন্ট রোড",
+        "ওয়ারী",
+        "কদমতলী",
+        "কমলাপুর",
+        "কলাবাগান",
+        "কল্যাণপুর",
+        "কাওরানবাজার",
+        "কাকরাইল",
+        "কাজীপাড়া",
+        "কাঠালবাগান",
+        "কাফরুল",
+        "কামরঙ্গীরচর",
+        "কুড়িল বিশ্বরোড",
+        "কেরানীগঞ্জ",
+        "কোতয়ালী",
+        "ক্যান্টনমেন্ট",
+        "খিলখেত",
+        "খিলখেত-ডুমনী",
+        "খিলখেত-নামাপাড়া",
+        "খিলখেত-পাতিরা",
+        "খিলখেত-পিংসিটি",
+        "খিলখেত-বরুয়া",
+        "খিলগাঁও",
+        "গাবতলী",
+        "গুলশান-১",
+        "গুলশান-২",
+        "গুলিস্থান",
+        "গেন্ডারিয়া",
+        "গ্রীন রোড",
+        "চকবাজার",
+        "জিগাতলা",
+        "জুরাইন",
+        "টিকাটুলি",
+        "ডিইউ ক্যাম্পাস",
+        "ডেমরা",
+        "তুরাগ",
+        "তেজকুনিপাড়া",
+        "তেজগাঁও",
+        "দক্ষিণ খান",
+        "দয়াগঞ্জ",
+        "দারাজ অফিস",
+        "দোহার",
+        "ধানমন্ডি",
+        "ধামরাই",
+        "নবাবগঞ্জ",
+        "নয়া পল্টন",
+        "নর্দ্দা",
+        "নাখালপাড়া",
+        "নারিন্দা",
+        "নিউ ইস্কাটন",
+        "নিউ মার্কেট",
+        "নিকুঞ্জ",
+        "নিকেতন",
+        "নীলক্ষেত",
+        "পলাশী",
+        "পল্লবী",
+        "পান্থপথ",
+        "পুরানা পল্টন",
+        "পূর্বাচল",
+        "পোস্তগোলা",
+        "ফার্মগেট",
+        "বকশীবাজার",
+        "বনশ্রী",
+        "বনানী",
+        "বনানী ডিওএইচএস",
+        "বংশাল",
+        "বসুন্ধরা",
+        "বাড্ডা",
+        "বারিধারা",
+        "বারিধারা ডিওএইচএস",
+        "বাংলাবাজার",
+        "বাংলামটর",
+        "বাসাবো",
+        "বিমানবন্দর থানা",
+        "বুয়েট ক্যাম্পাস",
+        "ভাটারা",
+        "মগবাজার",
+        "মতিঝিল",
+        "মধ্য বাড্ডা",
+        "মহাখালী",
+        "মহাখালী ডিওএইচএস",
+        "মানিকনগর",
+        "মালিবাগ",
+        "মিরপুর",
+        "মিরপুর ডিওএইচএস",
+        "মিরপুর-১",
+        "মিরপুর-১০",
+        "মিরপুর-১১",
+        "মিরপুর-১২",
+        "মিরপুর-২",
+        "মুগদা",
+        "মোহাম্মদপুর",
+        "যাত্রাবাড়ী",
+        "রমনা",
+        "রাজাবাজার",
+        "রাজারবাগ",
+        "রামপুরা",
+        "রায়েরবাগ",
+        "রায়েরবাজার",
+        "রূপনগর",
+        "লক্ষীবাজার",
+        "লালবাগ",
+        "লালমাটিয়া",
+        "শনিরআখড়া",
+        "শান্তিনগর",
+        "শাহজাদপুর",
+        "শাহজানপুর",
+        "শাহবাগ",
+        "শিমরাইল",
+        "শুক্রাবাদ",
+        "শেরে বাংলা নগর",
+        "শ্যামপুর",
+        "শ্যামলী",
+        "সদরঘাট",
+        "সবুজবাগ",
+        "সাভার",
+        "সিদ্ধেশ্বরী",
+        "সূত্রাপুর",
+        "সেগুনবাগিচা",
+        "হাজারীবাগ",
+        "হাতিরপুল",
+      ]);
+    if (city === "রাজশাহী")
+      setAreas([
+        "গোদাগাড়ি",
+        "চারঘাট",
+        "চেরাগঘাট",
+        "তানোর",
+        "দুর্গাপুর",
+        "পবা",
+        "পুটিয়া",
+        "বাঘমারা",
+        "বাঘা",
+        "মোহনপুর",
+        "রাজশাহী সিটি",
+      ]);
+  }, [city]);
   return (
     <>
       <form onSubmit={handleSunmit} ref={formRef} autocomplete="off">
@@ -237,7 +395,13 @@ const OrderForm = () => {
           <div className="py-3 inline-block w-1/2 pl-1">
             <FormControl fullWidth required>
               <InputLabel id="cityLabel">City</InputLabel>
-              <Select labelId="cityLabel" id="city" label="City" name="city">
+              <Select
+                labelId="cityLabel"
+                id="city"
+                label="City"
+                name="city"
+                onChange={(e) => setCity(e.target.value)}
+              >
                 {cityoptions?.map((city, _i) => (
                   <MenuItem value={city.toString()} key={_i}>
                     {city}
@@ -249,8 +413,14 @@ const OrderForm = () => {
           <div className="py-3 inline-block w-full pr-1">
             <FormControl fullWidth required>
               <InputLabel id="areaLabel">Area</InputLabel>
-              <Select labelId="areaLabel" id="area" label="Area" name="area">
-                {areaOptions?.map((area, _i) => (
+              <Select
+                labelId="areaLabel"
+                id="area"
+                label="Area"
+                name="area"
+                disabled={!city}
+              >
+                {areas?.map((area, _i) => (
                   <MenuItem value={area.toString()} key={_i}>
                     {area}
                   </MenuItem>
@@ -258,6 +428,9 @@ const OrderForm = () => {
               </Select>
             </FormControl>
           </div>
+          {!city && (
+            <Alert severity="warning">You need to fill up city first!</Alert>
+          )}
           <div className="py-3 inline-block w-full">
             <TextField
               multiline
