@@ -161,8 +161,26 @@ const OrderForm = () => {
     console.log("done");
   }
 
+  // conditions
+  if (orderID) {
+    router.push(`/order/${orderID}`);
+  }
+
+  if (loading) {
+    return (
+      <div>
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={loading}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      </div>
+    );
+  }
+
   useEffect(() => {
-    if (city === "ঢাকা") {
+    if (city == "ঢাকা") {
       setAreas([
         "আগারগাঁও",
         "আজিমপুর",
@@ -302,7 +320,7 @@ const OrderForm = () => {
         "হাতিরপুল",
       ]);
     }
-    if (city === "রাজশাহী") {
+    if (city == "রাজশাহী") {
       setAreas([
         "গোদাগাড়ি",
         "চারঘাট",
@@ -317,25 +335,7 @@ const OrderForm = () => {
         "রাজশাহী সিটি",
       ]);
     }
-    setAreas(null);
   }, [city]);
-  // conditions
-  if (orderID) {
-    router.push(`/order/${orderID}`);
-  }
-
-  if (loading) {
-    return (
-      <div>
-        <Backdrop
-          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={loading}
-        >
-          <CircularProgress color="inherit" />
-        </Backdrop>
-      </div>
-    );
-  }
   return (
     <>
       <form onSubmit={handleSunmit} ref={formRef} autocomplete="off">
