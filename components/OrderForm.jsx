@@ -160,25 +160,6 @@ const OrderForm = () => {
 
     console.log("done");
   }
-
-  // conditions
-  if (orderID) {
-    router.push(`/order/${orderID}`);
-  }
-
-  if (loading) {
-    return (
-      <div>
-        <Backdrop
-          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={loading}
-        >
-          <CircularProgress color="inherit" />
-        </Backdrop>
-      </div>
-    );
-  }
-
   useEffect(() => {
     if (city == "ঢাকা") {
       setAreas([
@@ -336,6 +317,24 @@ const OrderForm = () => {
       ]);
     }
   }, [city]);
+  // conditions
+  if (orderID) {
+    router.push(`/order/${orderID}`);
+  }
+
+  if (loading) {
+    return (
+      <div>
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={loading}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      </div>
+    );
+  }
+
   return (
     <>
       <form onSubmit={handleSunmit} ref={formRef} autocomplete="off">
