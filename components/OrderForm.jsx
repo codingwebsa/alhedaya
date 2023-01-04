@@ -94,7 +94,6 @@ const OrderForm = () => {
     "সুনামগঞ্জ",
     "হবিগঞ্জ",
   ];
-  const areaOptions = ["Godagari", "Carghat"];
 
   function handleSunmit(e) {
     e.preventDefault();
@@ -160,23 +159,6 @@ const OrderForm = () => {
     }, 500);
 
     console.log("done");
-  }
-
-  if (orderID) {
-    router.push(`/order/${orderID}`);
-  }
-
-  if (loading) {
-    return (
-      <div>
-        <Backdrop
-          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={loading}
-        >
-          <CircularProgress color="inherit" />
-        </Backdrop>
-      </div>
-    );
   }
 
   useEffect(() => {
@@ -337,6 +319,23 @@ const OrderForm = () => {
     }
     setAreas(null);
   }, [city]);
+  // conditions
+  if (orderID) {
+    router.push(`/order/${orderID}`);
+  }
+
+  if (loading) {
+    return (
+      <div>
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={loading}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      </div>
+    );
+  }
   return (
     <>
       <form onSubmit={handleSunmit} ref={formRef} autocomplete="off">
