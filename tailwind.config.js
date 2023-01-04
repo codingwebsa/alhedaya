@@ -16,6 +16,7 @@ module.exports = {
       fontFamily: {
         hindSiliguri: ["Hind Siliguri"],
         nunito: ["Nunito"],
+        balbo: ["Baloo Da 2"],
       },
     },
   },

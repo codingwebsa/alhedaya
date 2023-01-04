@@ -330,6 +330,8 @@ const OrderForm = () => {
         "মোহনপুর",
         "রাজশাহী সিটি",
       ]);
+
+    setAreas(null);
   }, [city]);
   return (
     <>
