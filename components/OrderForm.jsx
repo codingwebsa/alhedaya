@@ -162,7 +162,9 @@ const OrderForm = () => {
     console.log("done");
   }
 
-  if (orderID) router.push(`/order/${orderID}`);
+  if (orderID) {
+    router.push(`/order/${orderID}`);
+  }
 
   if (loading) {
     return (
@@ -178,7 +180,7 @@ const OrderForm = () => {
   }
 
   useEffect(() => {
-    if (city === "ঢাকা")
+    if (city === "ঢাকা") {
       setAreas([
         "আগারগাঁও",
         "আজিমপুর",
@@ -317,7 +319,8 @@ const OrderForm = () => {
         "হাজারীবাগ",
         "হাতিরপুল",
       ]);
-    if (city === "রাজশাহী")
+    }
+    if (city === "রাজশাহী") {
       setAreas([
         "গোদাগাড়ি",
         "চারঘাট",
@@ -331,7 +334,7 @@ const OrderForm = () => {
         "মোহনপুর",
         "রাজশাহী সিটি",
       ]);
-
+    }
     setAreas(null);
   }, [city]);
   return (
