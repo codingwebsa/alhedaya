@@ -164,7 +164,7 @@ const OrderForm = () => {
 
   if (orderID) router.push(`/order/${orderID}`);
 
-  if (loading)
+  if (loading) {
     return (
       <div>
         <Backdrop
@@ -175,6 +175,7 @@ const OrderForm = () => {
         </Backdrop>
       </div>
     );
+  }
 
   useEffect(() => {
     if (city === "ঢাকা")
