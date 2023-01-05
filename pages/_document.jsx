@@ -18,7 +18,7 @@ export default function Document() {
         />
         <meta name="theme-color" content="#E8F3F1" />
       </Head>
-      <body className="text-dark font-balbo">
+      <body className="text-dark font-hindSiliguri">
         <Main />
         <NextScript />
       </body>

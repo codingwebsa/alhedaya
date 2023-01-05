@@ -3,84 +3,91 @@ import { useRouter } from "next/router";
 // components
 import { Layout } from "../../../components";
 // firestore
-import { doc, getDoc, getDocs } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 // firebase configuration
 import { firebaseDB } from "../../../firebase.config";
 import { useEffect, useState } from "react";
-import { Backdrop, CircularProgress, LinearProgress } from "@mui/material";
+import { Backdrop, CircularProgress } from "@mui/material";
 
-const data = {
-  shippingfee: 30,
-  subtotal: 340,
-  total: 370,
-  user_email: "sofiqulsdm@gmail.com",
-  user_name: "Sofiqul Islam",
-  user_phone: "01792430530",
-  country: "Bangladesh",
-  city: "Rajshahi",
-  area: "Godagari",
-  zone: "Chapai",
-  address_details: "123 Main St",
-  books: [
-    {
-      title: "নবি জীবনের গল্প",
-      authorName: "আরিফ আজাদ",
-      price: 240,
-      discountPrice: 170,
-      imgurl:
-        "https://res.cloudinary.com/dd2xrg1vb/image/upload/v1672378864/book_web/ncxi4u34fhk9vlpwe9u9.jpg",
-    },
-    {
-      title: "আরজ আলী সমীপে",
-      authorName: "আরিফ আজাদ",
-      price: 280,
-      discountPrice: 170,
-      imgurl:
-        "https://res.cloudinary.com/dd2xrg1vb/image/upload/v1672378864/book_web/ksbjk5yil58xwf6sktug.jpg",
-    },
-  ],
+const StatusCom = ({ status }) => {
+  return (
+    <>
+      <span
+        className={`text-sm ${
+          status == "pending"
+            ? "bg-yellow-200"
+            : status == "cancled"
+            ? "bg-red-300"
+            : "bg-green-400"
+        } py-1 px-4 text-dark font-bold rounded-full relative inline-flex items-center gap-1`}
+      >
+        <span
+          className={`relative w-2 h-2 rounded-full ${
+            status == "pending"
+              ? "bg-yellow-500"
+              : status == "cancled"
+              ? "bg-red-500"
+              : "bg-green-400"
+          } `}
+        ></span>
+        <p className="inline-block">{status}</p>
+      </span>
+    </>
+  );
 };
 
 const OrderDetails = () => {
   const router = useRouter();
   const [orderDetails, setOrderDetails] = useState(null);
+  const [loading, setLoading] = useState(false);
   const { slug: orderID } = router.query;
 
   async function getOrderDetails() {
+    setLoading(true);
     const docRef = doc(firebaseDB, "orders", orderID);
-    getDoc(docRef).then((doc) => {
+    await getDoc(docRef).then((doc) => {
       setOrderDetails({ data: doc.data(), id: doc.id });
     });
+    setLoading(false);
   }
-
+  async function cancleOrder() {
+    setLoading(true);
+    const docRef = doc(firebaseDB, "orders", orderID);
+    await updateDoc(docRef, {
+      status: "cancled",
+    });
+    setLoading(false);
+    router.reload();
+  }
   useEffect(() => {
     if (orderID) getOrderDetails();
   }, [orderID]);
 
-  if (!orderDetails)
-    return (
-      <>
-        <div>
-          <Backdrop
-            sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-            open={true}
-          >
-            <CircularProgress color="inherit" />
-          </Backdrop>
-        </div>
-      </>
-    );
-
   return (
     <>
+      {loading && (
+        <>
+          <div>
+            <Backdrop
+              sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+              open={true}
+            >
+              <CircularProgress color="inherit" />
+            </Backdrop>
+          </div>
+        </>
+      )}
       <Layout>
         {/* wrapper */}
         <div>
           <div className="min-h-screen m-2 p-3 bg-slate-100 rounded-md">
-            <h1 className="text-xl font-bold">
-              Order ID {"#"}
-              <span className="underline">{orderID}</span>
-            </h1>
+            <div>
+              <h1 className="text-xl font-bold">
+                Order ID {"#"}
+                <span className="underline">{orderID}</span>
+              </h1>
+              <StatusCom status={orderDetails?.data.status} />
+            </div>
             {/* ordered books */}
             <div className="flex flex-col gap-2 mt-4">
               {orderDetails?.data.cartItems.map((book, _i) => (
@@ -128,7 +135,7 @@ const OrderDetails = () => {
                 {/* address */}
                 <div className="mt-2">
                   {orderDetails?.data.country} <br />
-                  {orderDetails?.data.area}, {data.city} <br />
+                  {orderDetails?.data.area}, {orderDetails?.data.city} <br />
                   {orderDetails?.data.addressDetails}
                 </div>
                 {/* payment details */}
@@ -164,6 +171,20 @@ const OrderDetails = () => {
               </div>
             </div>
           </div>
+
+          {orderDetails?.data.status !== "cancled" && (
+            <div className="my-4 mx-3 text-lg">
+              <p>
+                want to cancle your order?{" "}
+                <span
+                  className="text-red-400 underline font-semibold cursor-pointer"
+                  onClick={() => cancleOrder()}
+                >
+                  Cancle now
+                </span>
+              </p>
+            </div>
+          )}
         </div>
       </Layout>
     </>
