@@ -134,8 +134,8 @@ const OrderForm = () => {
     function SendMail() {
       emailjs
         .sendForm(
-          "service_vger1bp",
-          "template_9b92ise",
+          "service_e076th7",
+          "template_emcfbol",
           formRef.current,
           "EPDakJSwpBnKoxtqA"
         )
