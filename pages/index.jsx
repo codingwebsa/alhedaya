@@ -15,6 +15,7 @@ import {
 // data
 import { data as booksData } from "../data/booksData";
 import { data as categoryData } from "../data/categoryData";
+import { NextSeo } from "next-seo";
 
 export default function Home() {
   const recentBooksData = booksData.slice(0, 8);
@@ -22,7 +23,24 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>আল হেদায়া</title>
+        <NextSeo
+          title="আল হেদায়া"
+          description="salahat.com is the largest online bookstore in Bangladesh. Buy Novel, Story, Islamic, Computer Programming, Children, West Bengal, Fiction, Non fiction, Medical, Engineering, Gift cards & Text books from the biggest selection of Bangla books at lowest price. Cash on delivery, Happy return policy & Free shipping offer available. Shop Now!"
+          canonical="https://www.canonical.ie/"
+          openGraph={{
+            url: "https://alhedaya.vercel.app/",
+            title: `আল হেদায়া`,
+            description:
+              "salahat.com is the largest online bookstore in Bangladesh. Buy Novel, Story, Islamic, Computer Programming, Children, West Bengal, Fiction, Non fiction, Medical, Engineering, Gift cards & Text books from the biggest selection of Bangla books at lowest price. Cash on delivery, Happy return policy & Free shipping offer available. Shop Now!",
+            images: [
+              {
+                url: "/apple-touch-icon.png",
+                alt: `আল হেদায়া`,
+              },
+            ],
+            siteName: "আল হেদায়া",
+          }}
+        />
       </Head>
       <Layout>
         <SearchComponent />

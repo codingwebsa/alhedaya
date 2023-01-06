@@ -65,7 +65,7 @@ const BookPage = ({
         description={description.substring(0, 100)}
         canonical="https://www.canonical.ie/"
         openGraph={{
-          url: "https://alhedaya.netlify.app/",
+          url: "https://alhedaya.vercel.app/",
           title: `${title} - আল হেদায়া`,
           description: description.substring(0, 100),
           images: [

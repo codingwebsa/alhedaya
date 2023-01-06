@@ -82,7 +82,7 @@ export default Writedata;
 
 //   // ------------------------**------------------------------------
 //   //   file writtings
-// writeData("data/booksData.js", _booksData.data.posts.nodes);
+//   writeData("data/booksData.js", _booksData.data.posts.nodes);
 //   writeData("data/categoryData.js", _categoryData.data.categories.edges);
 //   writeData("data/authorsData.js", _authorsData.data.pages.edges);
 

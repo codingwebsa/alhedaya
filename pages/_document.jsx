@@ -17,6 +17,7 @@ export default function Document() {
           rel="stylesheet"
         />
         <meta name="theme-color" content="#E8F3F1" />
+        <link rel="shortcut icon" href="favicon.png" type="image/x-icon" />
       </Head>
       <body className="text-dark font-hindSiliguri">
         <Main />
