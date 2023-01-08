@@ -250,6 +250,10 @@ export default function DataTable() {
                   <span className="font-medium text-xl">Phone:</span>{" "}
                   {popupDetails?.phoneNum}
                 </div>
+                <div>
+                  <span className="font-medium text-xl">Alt Number:</span>{" "}
+                  {popupDetails?.alternativePhoneNum || "none"}
+                </div>
               </div>
               {/* address */}
               <div className="mt-2">
