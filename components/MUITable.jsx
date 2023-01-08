@@ -9,13 +9,19 @@ import TableHead from "@mui/material/TableHead";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
+import { SwipeableDrawer } from "@mui/material";
 // FIREBASE
-import { orderBy, query, getDocs } from "firebase/firestore";
-import { orderCollertionRef } from "../firebase.config";
+import { orderBy, query, getDocs, doc, updateDoc } from "firebase/firestore";
+import { firebaseDB, orderCollertionRef } from "../firebase.config";
 // DAYJS
 import { unix } from "dayjs";
-import { SwipeableDrawer } from "@mui/material";
+// NEXTJS
 import Image from "next/image";
+// ICONS
+import { BsCheckAll } from "react-icons/bs";
+import { AiOutlineInfoCircle } from "react-icons/ai";
+import { RxCross2 } from "react-icons/rx";
+import MUILoading from "./MUILoading";
 
 const StatusCom = ({ status }) => {
   return (
@@ -99,6 +105,7 @@ export default function DataTable() {
   const [orders, setOrders] = useState(null);
   const [popupOpen, setPopupOpen] = useState(false);
   const [popupDetails, setPopupDetails] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   async function getOrders() {
     const tempOrders = [];
@@ -117,15 +124,36 @@ export default function DataTable() {
   function handlePopup(data) {
     setPopupDetails(data);
     setPopupOpen(true);
-    console.log(data);
+  }
+  async function handleAction(action) {
+    setLoading(true);
+    const docRef = doc(firebaseDB, "orders", popupDetails.id);
+    if (action === "complete") {
+      await updateDoc(docRef, {
+        status: "completed",
+      });
+    }
+    if (action === "pending") {
+      await updateDoc(docRef, {
+        status: "pending",
+      });
+    }
+    if (action === "cancle") {
+      await updateDoc(docRef, {
+        status: "cancled",
+      });
+    }
+    setLoading(false);
   }
 
   useEffect(() => {
     getOrders();
   }, []);
   return (
-    <div className="h-screen w-full p-4">
-      {/* <DataGrid
+    <>
+      <div className="h-screen w-full p-4">
+        {loading && <MUILoading loading={loading} />}
+        {/* <DataGrid
         rows={rows}
         columns={columns}
         getCellClassName={(params) => {
@@ -141,160 +169,195 @@ export default function DataTable() {
         // checkboxSelection
         components={{ Toolbar: GridToolbar }}
       /> */}
-      <Card>
-        <TableContainer>
-          <Table sx={{ minWidth: 800 }} aria-label="table in dashboard">
-            <TableHead>
-              <TableRow>
-                <TableCell className="font-bold">Name</TableCell>
-                <TableCell className="font-bold">Number</TableCell>
-                <TableCell className="font-bold">Email</TableCell>
-                <TableCell className="font-bold">Date</TableCell>
-                <TableCell className="font-bold">Price</TableCell>
-                <TableCell className="font-bold">Status</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {orders?.map((order) => (
-                <TableRow
-                  hover
-                  key={order?.name}
-                  className="cursor-pointer"
-                  sx={{ "&:last-of-type td, &:last-of-type th": { border: 0 } }}
-                  onClick={() => handlePopup(order)}
-                >
-                  <TableCell
-                    sx={{ py: (theme) => `${theme.spacing(0.5)} !important` }}
-                    className="font-semibold text-base"
-                  >
-                    {order?.name}
-                  </TableCell>
-                  <TableCell>{order?.phoneNum}</TableCell>
-                  <TableCell>{order?.email}</TableCell>
-                  <TableCell>
-                    {unix(order.orderAt.seconds).format("YYYY-MM-DD")}
-                  </TableCell>
-                  <TableCell>৳ {order?.total}</TableCell>
-                  <TableCell
-                    className={`${
-                      order?.status === "pending"
-                        ? "bg-yellow-200"
-                        : order?.status === "cancled"
-                        ? "bg-rose-300"
-                        : "bg-emerald-300"
-                    }`}
-                  >
-                    {order?.status}
-                  </TableCell>
+        <Card>
+          <TableContainer>
+            <Table sx={{ minWidth: 800 }} aria-label="table in dashboard">
+              <TableHead>
+                <TableRow>
+                  <TableCell className="font-bold">Name</TableCell>
+                  <TableCell className="font-bold">Number</TableCell>
+                  <TableCell className="font-bold">Email</TableCell>
+                  <TableCell className="font-bold">Date</TableCell>
+                  <TableCell className="font-bold">Price</TableCell>
+                  <TableCell className="font-bold">Status</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Card>
+              </TableHead>
+              <TableBody>
+                {orders?.map((order) => (
+                  <TableRow
+                    hover
+                    key={order?.name}
+                    className="cursor-pointer"
+                    sx={{
+                      "&:last-of-type td, &:last-of-type th": { border: 0 },
+                    }}
+                    onClick={() => handlePopup(order)}
+                  >
+                    <TableCell
+                      sx={{ py: (theme) => `${theme.spacing(0.5)} !important` }}
+                      className="font-semibold text-base"
+                    >
+                      {order?.name}
+                    </TableCell>
+                    <TableCell>{order?.phoneNum}</TableCell>
+                    <TableCell>{order?.email}</TableCell>
+                    <TableCell>
+                      {unix(order.orderAt.seconds).format("YYYY-MM-DD")}
+                    </TableCell>
+                    <TableCell>৳ {order?.total}</TableCell>
+                    <TableCell
+                      className={`${
+                        order?.status === "pending"
+                          ? "bg-yellow-200"
+                          : order?.status === "cancled"
+                          ? "bg-rose-300"
+                          : "bg-emerald-300"
+                      }`}
+                    >
+                      {order?.status}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Card>
 
-      <SwipeableDrawer
-        anchor="bottom"
-        open={popupOpen}
-        onClose={() => setPopupOpen(false)}
-      >
-        {/* close button */}
-        <span></span>
-        {/* content */}
-        <div className="max-h-96 m-2 p-3 bg-slate-100 rounded-md ">
-          <div>
-            <h1 className="text-xl font-bold">
-              Order ID {"#"}
-              <span className="underline">{popupDetails?.id}</span>
-            </h1>
-            <StatusCom status={popupDetails?.status} />
-          </div>
-          {/* ordered books */}
-          <div className="flex flex-col gap-2 mt-4">
-            {popupDetails?.cartItems.map((book, _i) => (
-              <div className="flex gap-3" key={_i}>
-                <div>
-                  <Image
-                    src={book.acf.imgurl}
-                    alt={book.title}
-                    width={120}
-                    height={80}
-                    className="h-24 w-24 object-cover rounded-lg"
-                  />
-                </div>
-                <div>
-                  <p className="text-lg font-semibold">{book.title}</p>
-                  <p className="text-base">{book.acf.author[0].title}</p>
-                  <p className="text-lg text-baseGreen font-bold">
-                    ৳ {book.acf.discountPrice || book.acf.price}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-          {/* order details */}
-          <div className="mt-8">
-            <h2 className="text-2xl fotn-semibold underline">Order Details</h2>
-            {/* details */}
+        <SwipeableDrawer
+          anchor="bottom"
+          open={popupOpen}
+          onClose={() => setPopupOpen(false)}
+        >
+          {/* close button */}
+          <span></span>
+          {/* content */}
+          <div className="max-h-96 m-2 p-3 bg-slate-100 rounded-md ">
             <div>
-              <div className="mt-4">
-                <div>
-                  <span className="font-medium text-xl">Name:</span>{" "}
-                  {popupDetails?.name}
+              <h1 className="text-xl font-bold">
+                Order ID {"#"}
+                <span className="underline">{popupDetails?.id}</span>
+              </h1>
+              <StatusCom status={popupDetails?.status} />
+            </div>
+            {/* ordered books */}
+            <div className="flex flex-col gap-2 mt-4">
+              {popupDetails?.cartItems.map((book, _i) => (
+                <div className="flex gap-3" key={_i}>
+                  <div>
+                    <Image
+                      src={book.acf.imgurl}
+                      alt={book.title}
+                      width={120}
+                      height={80}
+                      className="h-24 w-24 object-cover rounded-lg"
+                    />
+                  </div>
+                  <div>
+                    <p className="text-lg font-semibold">{book.title}</p>
+                    <p className="text-base">{book.acf.author[0].title}</p>
+                    <p className="text-lg text-baseGreen font-bold">
+                      ৳ {book.acf.discountPrice || book.acf.price}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <span className="font-medium text-xl">Email:</span>{" "}
-                  {popupDetails?.email}
+              ))}
+            </div>
+            {/* order details */}
+            <div className="mt-8">
+              <h2 className="text-2xl fotn-semibold underline">
+                Order Details
+              </h2>
+              {/* details */}
+              <div>
+                <div className="mt-4">
+                  <div>
+                    <span className="font-medium text-xl">Name:</span>{" "}
+                    {popupDetails?.name}
+                  </div>
+                  <div>
+                    <span className="font-medium text-xl">Email:</span>{" "}
+                    {popupDetails?.email}
+                  </div>
+                  <div>
+                    <span className="font-medium text-xl">Phone:</span>{" "}
+                    {popupDetails?.phoneNum}
+                  </div>
+                  <div>
+                    <span className="font-medium text-xl">Alt Number:</span>{" "}
+                    {popupDetails?.alternativePhoneNum || "none"}
+                  </div>
                 </div>
-                <div>
-                  <span className="font-medium text-xl">Phone:</span>{" "}
-                  {popupDetails?.phoneNum}
+                {/* address */}
+                <div className="mt-2">
+                  {popupDetails?.country} <br />
+                  {popupDetails?.area}, {popupDetails?.city} <br />
+                  {popupDetails?.addressDetails}
                 </div>
-                <div>
-                  <span className="font-medium text-xl">Alt Number:</span>{" "}
-                  {popupDetails?.alternativePhoneNum || "none"}
+                {/* payment details */}
+                <div className="mt-4">
+                  <h2 className="text-xl font-bold">Payment information</h2>
+                  <div className="mt-2 pb-10">
+                    <p>
+                      <span>Method: </span>
+                      <span className="font-semibold">
+                        {popupDetails?.paymentMethod}
+                      </span>
+                    </p>
+                    <p>
+                      <span>Subtotal: </span>
+                      <span className="font-semibold">
+                        ৳ {popupDetails?.subTotal}
+                      </span>
+                    </p>
+                    <p>
+                      <span>Shipping Fee: </span>
+                      <span className="font-semibold">
+                        ৳ {popupDetails?.ShipingFee}
+                      </span>
+                    </p>
+                    <p>
+                      <span>Total: </span>
+                      <span className="font-semibold">
+                        ৳ {popupDetails?.total}
+                      </span>
+                    </p>
+                  </div>
                 </div>
               </div>
-              {/* address */}
-              <div className="mt-2">
-                {popupDetails?.country} <br />
-                {popupDetails?.area}, {popupDetails?.city} <br />
-                {popupDetails?.addressDetails}
-              </div>
-              {/* payment details */}
-              <div className="mt-4">
-                <h2 className="text-xl font-bold">Payment information</h2>
-                <div className="mt-2 pb-20">
-                  <p>
-                    <span>Method: </span>
-                    <span className="font-semibold">
-                      {popupDetails?.paymentMethod}
-                    </span>
-                  </p>
-                  <p>
-                    <span>Subtotal: </span>
-                    <span className="font-semibold">
-                      ৳ {popupDetails?.subTotal}
-                    </span>
-                  </p>
-                  <p>
-                    <span>Shipping Fee: </span>
-                    <span className="font-semibold">
-                      ৳ {popupDetails?.ShipingFee}
-                    </span>
-                  </p>
-                  <p>
-                    <span>Total: </span>
-                    <span className="font-semibold">
-                      ৳ {popupDetails?.total}
-                    </span>
-                  </p>
+              {/* action buttons */}
+              <div className="flex pb-10 justify-around">
+                <div
+                  className="inline-flex gap-1 items-center bg-emerald-600 px-3 py-2 rounded-full text-white shadow-xl cursor-pointer"
+                  onClick={() => handleAction("complete")}
+                >
+                  <span>
+                    <BsCheckAll />
+                  </span>
+                  <span>Complete</span>
+                </div>
+                <div
+                  className="inline-flex gap-1 items-center bg-yellow-600 px-3 py-2 rounded-full text-white shadow-xl cursor-pointer"
+                  onClick={() => handleAction("pending")}
+                >
+                  <span>
+                    <AiOutlineInfoCircle />
+                  </span>
+                  <span>Pending</span>
+                </div>
+                <div
+                  className="inline-flex gap-1 items-center bg-rose-600 px-3 py-2 rounded-full text-white shadow-xl cursor-pointer"
+                  onClick={() => handleAction("cancle")}
+                >
+                  <span>
+                    <RxCross2 />
+                  </span>
+                  <span>Cancle</span>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </SwipeableDrawer>
-    </div>
+        </SwipeableDrawer>
+      </div>
+    </>
   );
 }
