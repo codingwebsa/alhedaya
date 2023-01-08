@@ -1,6 +1,7 @@
 // components
 import Footer from "./Footer";
 import Header from "./Header";
+import Sidebar from "./Sidebar";
 import SimpleHeader from "./SimpleHeader";
 
 const Layout = ({
@@ -12,6 +13,7 @@ const Layout = ({
   return (
     <>
       <div className="max-w-7xl mx-auto">
+        <Sidebar />
         {header && <Header />}
         {simpleHeader && <SimpleHeader />}
         {children}

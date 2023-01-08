@@ -8,6 +8,7 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { firebaseDB } from "../../../firebase.config";
 import { useEffect, useState } from "react";
 import { Backdrop, CircularProgress } from "@mui/material";
+import Head from "next/head";
 
 const StatusCom = ({ status }) => {
   return (
@@ -65,6 +66,9 @@ const OrderDetails = () => {
 
   return (
     <>
+      <Head>
+        <title>Track Order</title>
+      </Head>
       {loading && (
         <>
           <div>

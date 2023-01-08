@@ -1,7 +1,7 @@
 // nextjs
 import Head from "next/head";
 // components
-import { Layout, MUITable } from "../components";
+import { Layout, MUITable, Sidebar } from "../components";
 
 const Dashboard = () => {
   return (

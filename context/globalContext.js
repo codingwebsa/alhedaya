@@ -12,6 +12,7 @@ export const GlobalContextProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const [subTotal, setSubTotal] = useState(0);
   const [total, setTotal] = useState(0);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const ShipingFee = 30;
   var priceArray = [];
 
@@ -54,6 +55,8 @@ export const GlobalContextProvider = ({ children }) => {
         subTotal,
         ShipingFee,
         getLocation,
+        sidebarOpen,
+        setSidebarOpen,
       }}
     >
       {children}

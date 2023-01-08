@@ -11,7 +11,7 @@ import {
 import { useContext, useEffect, useRef, useState } from "react";
 import { GlobalContext } from "../context/globalContext";
 // firestore
-import { addDoc } from "firebase/firestore";
+import { addDoc, serverTimestamp } from "firebase/firestore";
 import { orderCollertionRef } from "../firebase.config";
 // email js
 import emailjs from "@emailjs/browser";
@@ -124,6 +124,7 @@ const OrderForm = () => {
         total,
         status: "pending",
         paymentMethod: "Pay on Delivery",
+        orderAt: serverTimestamp(),
       }).then((docRef) => {
         if (typeof window !== "undefined") {
           localStorage.setItem("recentOrderID", docRef.id);
@@ -334,7 +335,6 @@ const OrderForm = () => {
       </div>
     );
   }
-
   return (
     <>
       <form onSubmit={handleSunmit} ref={formRef} autocomplete="off">

@@ -27,7 +27,12 @@ const Cart = () => {
       <Layout>
         <div className="h-screen flex flex-col gap-10 items-center justify-center px-4">
           <h2 className="text-xl font-bold">Your Cart is Empty</h2>
-          <Image src={EmptyCartSVG} height={400} width={400} />
+          <Image
+            src={EmptyCartSVG}
+            alt="Empty Cart Image"
+            height={400}
+            width={400}
+          />
         </div>
       </Layout>
     );
