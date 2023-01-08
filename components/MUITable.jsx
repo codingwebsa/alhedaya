@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 // MUI
 // import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Table from "@mui/material/Table";
 import TableRow from "@mui/material/TableRow";
@@ -15,7 +14,7 @@ import { orderBy, query, getDocs } from "firebase/firestore";
 import { orderCollertionRef } from "../firebase.config";
 // DAYJS
 import { unix } from "dayjs";
-import { Drawer, SwipeableDrawer } from "@mui/material";
+import { SwipeableDrawer } from "@mui/material";
 import Image from "next/image";
 
 const StatusCom = ({ status }) => {
@@ -27,7 +26,7 @@ const StatusCom = ({ status }) => {
             ? "bg-yellow-200"
             : status == "cancled"
             ? "bg-red-300"
-            : "bg-green-400"
+            : "bg-green-300"
         } py-1 px-4 text-dark font-bold rounded-full relative inline-flex items-center gap-1`}
       >
         <span
@@ -36,7 +35,7 @@ const StatusCom = ({ status }) => {
               ? "bg-yellow-500"
               : status == "cancled"
               ? "bg-red-500"
-              : "bg-green-400"
+              : "bg-green-500"
           } `}
         ></span>
         <p className="inline-block">{status}</p>
@@ -116,8 +115,8 @@ export default function DataTable() {
   }
 
   function handlePopup(data) {
-    setPopupOpen(true);
     setPopupDetails(data);
+    setPopupOpen(true);
     console.log(data);
   }
 
@@ -208,7 +207,7 @@ export default function DataTable() {
               Order ID {"#"}
               <span className="underline">{popupDetails?.id}</span>
             </h1>
-            <StatusCom status={popupDetails?.staus} />
+            <StatusCom status={popupDetails?.status} />
           </div>
           {/* ordered books */}
           <div className="flex flex-col gap-2 mt-4">
