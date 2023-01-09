@@ -9,6 +9,7 @@ import { firebaseDB } from "../../../firebase.config";
 import { useEffect, useState } from "react";
 import { Backdrop, CircularProgress } from "@mui/material";
 import Head from "next/head";
+import { toast, Toaster } from "react-hot-toast";
 
 const StatusCom = ({ status }) => {
   return (
@@ -45,10 +46,14 @@ const OrderDetails = () => {
 
   async function getOrderDetails() {
     setLoading(true);
-    const docRef = doc(firebaseDB, "orders", orderID);
-    await getDoc(docRef).then((doc) => {
-      setOrderDetails({ data: doc.data(), id: doc.id });
-    });
+    try {
+      const docRef = doc(firebaseDB, "orders", orderID);
+      await getDoc(docRef).then((doc) => {
+        setOrderDetails({ data: doc.data(), id: doc.id });
+      });
+    } catch (error) {
+      router.push("/");
+    }
     setLoading(false);
   }
   async function cancleOrder() {

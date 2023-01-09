@@ -16,7 +16,7 @@ const RecentOrder = () => {
   return (
     <>
       <Link href={`/order/${recentOrderID}`}>
-        <div className="px-4 my-4">
+        <div className="px-4 my-4 shadow-2xl">
           <div className="flex gap-3 items-center p-4 bg-[#00c9a733] rounded-xl">
             <span>
               <TbTruckDelivery size={40} />

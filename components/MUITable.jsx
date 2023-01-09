@@ -110,7 +110,7 @@ export default function DataTable() {
   async function getOrders() {
     const tempOrders = [];
 
-    const q = query(orderCollertionRef, orderBy("orderAt"));
+    const q = query(orderCollertionRef, orderBy("orderAt", "desc"));
 
     const querySnapshot = await getDocs(q);
 
@@ -231,7 +231,7 @@ export default function DataTable() {
           {/* close button */}
           <span></span>
           {/* content */}
-          <div className="max-h-96 m-2 p-3 bg-slate-100 rounded-md ">
+          <div className="h-[75vh] m-2 p-3 bg-slate-100 rounded-md ">
             <div>
               <h1 className="text-xl font-bold">
                 Order ID {"#"}
@@ -327,7 +327,7 @@ export default function DataTable() {
               {/* action buttons */}
               <div className="flex pb-10 justify-around">
                 <div
-                  className="inline-flex gap-1 items-center bg-emerald-600 px-3 py-2 rounded-full text-white shadow-xl cursor-pointer"
+                  className="inline-flex gap-1 items-center bg-emerald-600 px-3 py-2 rounded-full text-white shadow-xl cursor-pointer shadow-emerald-100"
                   onClick={() => handleAction("complete")}
                 >
                   <span>
@@ -336,7 +336,7 @@ export default function DataTable() {
                   <span>Complete</span>
                 </div>
                 <div
-                  className="inline-flex gap-1 items-center bg-yellow-600 px-3 py-2 rounded-full text-white shadow-xl cursor-pointer"
+                  className="inline-flex gap-1 items-center bg-yellow-600 px-3 py-2 rounded-full text-white shadow-xl cursor-pointer shadow-yellow-100"
                   onClick={() => handleAction("pending")}
                 >
                   <span>
@@ -345,7 +345,7 @@ export default function DataTable() {
                   <span>Pending</span>
                 </div>
                 <div
-                  className="inline-flex gap-1 items-center bg-rose-600 px-3 py-2 rounded-full text-white shadow-xl cursor-pointer"
+                  className="inline-flex gap-1 items-center bg-rose-600 px-3 py-2 rounded-full text-white shadow-xl cursor-pointer shadow-rose-100"
                   onClick={() => handleAction("cancle")}
                 >
                   <span>
